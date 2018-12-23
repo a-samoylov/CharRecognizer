@@ -11,26 +11,31 @@ namespace MachineLearning.NeuralNetworkNS
     class Neuron
     {
         public int Id { get; }
-        public bool IsActive { get; set; }
 
+        private bool           IsSendSignals = false;
         private List<Relation> relations = new List<Relation>();
-        
-        private double inputData = 0;
+        private double         inputData = 0;
 
         public Neuron(int id)
         {
             Id = id;
-            IsActive = false;
         }
 
         public void SendSignals()
         {
+            if (IsSendSignals)
+            {
+                throw new Exception("This neuron has already send signals.");
+            } 
+
             foreach (Relation relation in relations)
             {
-                Neuron neuron = relation.Neuron;
+                Neuron nextNeuron = relation.Neuron;
 
-                neuron.AddSignal(GetData() * relation.Weight);
+                nextNeuron.AddSignal(this.GetData() * relation.Weight);
             }
+
+            IsSendSignals = true;
         }
 
         public void AddSignal(double signal)
@@ -42,12 +47,6 @@ namespace MachineLearning.NeuralNetworkNS
         {
             return ActivationFunction(inputData);
         }
-
-        public double GetInputData()
-        {
-            return ActivationFunction(inputData);
-        }
-
 
         public void ClearData()
         {

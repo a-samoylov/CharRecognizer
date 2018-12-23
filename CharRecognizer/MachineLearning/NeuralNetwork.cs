@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MachineLearning.NeuralNetworkNS;
 
-namespace MachineLearning
+namespace MachineLearning.NeuralNetworkNS
 {
     [Serializable]
     class NeuralNetwork
@@ -81,7 +80,7 @@ namespace MachineLearning
             for (int i = 0; i < neurons.Count; i++)
             {
                 neurons[i].AddSignal(v[i]);
-                neurons[i].IsActive = true;
+                //neurons[i].IsActive = true;
             }
         }
 

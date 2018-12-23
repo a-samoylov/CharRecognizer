@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MachineLearning.NeuralNetworkNS;
+using MachineLearning.NeuralNetworkNS.RelationNS;
 
 namespace MachineLearning.TeachingMethods
 {
@@ -19,7 +20,7 @@ namespace MachineLearning.TeachingMethods
             neuralNetwork.Process();
 
             double error       = neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetData() - expectedResult;
-            double weightDelta = error * SigmoidDx(neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetInputData());
+            double weightDelta = error * SigmoidDx(neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetData());
 
             for (int currentLayerId = neuralNetwork.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
             {

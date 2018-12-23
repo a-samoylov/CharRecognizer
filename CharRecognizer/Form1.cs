@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using MachineLearning;
 using MachineLearning.NeuralNetworkNS;
 using MachineLearning.NeuralNetworkNS.RelationNS;
+using MachineLearning.TeachingMethods;
 
 namespace CharRecognizer
 {
@@ -22,7 +22,7 @@ namespace CharRecognizer
         {
             InitializeComponent();
 
-            /*GenerateTestNetworkWithErrorWeight();
+            //GenerateTestNetworkWithErrorWeight();
 
             UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
 
@@ -30,7 +30,7 @@ namespace CharRecognizer
             NeuralNetwork neuralNetwork = neuralNetworkManager.Get("TestErrorNeuralNetwork");
 
             double[] v = new double[] { 1, 1, 0};
-            uncertaintyPropagationMethod.GetTeachedNeuralNetwork(neuralNetwork, v, 1, 0);*/
+            uncertaintyPropagationMethod.GetTeachedNeuralNetwork(neuralNetwork, v, 1, 0);
         }
 
         private void button1_Click(object sender, EventArgs e)

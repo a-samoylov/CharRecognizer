@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 using MachineLearning.NeuralNetworkNS;
 
 namespace CharRecognizer
@@ -12,14 +13,14 @@ namespace CharRecognizer
     {
         const string NAME               = "TestNeuralNetwork";
         const int INPUT_VECTOR_LENGTH   = 3;
-        const double MIN_CORRECT_ANSWER = 0.6;
+        const double MIN_CORRECT_ANSWER = 0.5;
 
         private int[] neuronsInLayer = new int[] { INPUT_VECTOR_LENGTH, 2, 1 };
         private NeuralNetwork neuralNetwork;
 
         public NeuralNetwork GetNeuralNetwork()
         {
-            if (this.neuralNetwork == null)
+            if (this.neuralNetwork != null)
             {
                 return this.neuralNetwork;
             }
