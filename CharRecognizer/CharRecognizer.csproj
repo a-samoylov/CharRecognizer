@@ -58,7 +58,7 @@
     <Compile Include="MachineLearning\NeuralNetwork\Manager.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Layer.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Neuron.cs" />
-    <Compile Include="MachineLearning\NeuralNetwork\Relation.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\Neuron\Relation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestNeuralNetwork.cs" />

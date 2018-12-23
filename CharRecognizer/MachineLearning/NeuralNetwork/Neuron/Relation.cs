@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace MachineLearning.NeuralNetworkNS.RelationNS
 {
     [Serializable]
     class Relation

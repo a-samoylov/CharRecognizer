@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MachineLearning.NeuralNetworkNS.RelationNS;
 
-namespace MachineLearning.NeuralNetwork
+namespace MachineLearning.NeuralNetworkNS
 {
     [Serializable]
     class Neuron
@@ -87,7 +88,7 @@ namespace MachineLearning.NeuralNetwork
             return 1.0 / (1.0 + Math.Pow(Math.E, -x));
         }
 
-        private double func(double x)
+        private double Func(double x)
         {
             if (x >= 0.5)
             {

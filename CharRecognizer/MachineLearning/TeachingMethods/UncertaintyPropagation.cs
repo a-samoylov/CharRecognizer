@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MachineLearning.NeuralNetwork;
+using MachineLearning.NeuralNetworkNS;
 
 namespace MachineLearning.TeachingMethods
 {
@@ -11,7 +11,7 @@ namespace MachineLearning.TeachingMethods
     {
         const double LEARNING_RATE = 0.1;
 
-        public NeuralNetwork.NeuralNetwork GetTeachedNeuralNetwork(NeuralNetwork.NeuralNetwork neuralNetwork, double[] v, int sucessNeuronId, double expectedResult)
+        public NeuralNetwork GetTeachedNeuralNetwork(NeuralNetwork neuralNetwork, double[] v, int sucessNeuronId, double expectedResult)
         {
             neuralNetwork.Clear();
 

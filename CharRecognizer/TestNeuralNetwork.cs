@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MachineLearning.NeuralNetwork;
+using MachineLearning.NeuralNetworkNS;
 
 namespace CharRecognizer
 {
