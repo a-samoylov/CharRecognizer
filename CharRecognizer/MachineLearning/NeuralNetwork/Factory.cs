@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MachineLearning.NeuralNetworkNS.RelationNS;
+using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS
 
 namespace MachineLearning.NeuralNetworkNS
 {
@@ -37,7 +37,7 @@ namespace MachineLearning.NeuralNetworkNS
                     foreach (Neuron nextLayerNeuron in nextLayer.GetListNeurons())
                     {
                         double weight = Convert.ToDouble(rand.Next(-100, 100)) / 100;
-                        neuron.AddRelation(new Relation(nextLayerNeuron, weight));
+                        neuron.AddRelation(new Synapse(nextLayerNeuron, weight));
                     }
                 }
             }

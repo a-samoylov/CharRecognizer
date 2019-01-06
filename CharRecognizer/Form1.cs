@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using MachineLearning.NeuralNetworkNS;
-using MachineLearning.NeuralNetworkNS.RelationNS;
+using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
 using MachineLearning.TeachingMethods;
 
 namespace CharRecognizer
@@ -60,17 +60,17 @@ namespace CharRecognizer
             Layer layer3 = new Layer(3);
             layer3.AddNeuron(new Neuron(1));
             
-            layer1.GetNeuronById(1).AddRelation(new Relation(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(1).AddRelation(new Relation(layer2.GetNeuronById(2), 0.5));
+            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.25));
+            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.5));
 
-            layer1.GetNeuronById(2).AddRelation(new Relation(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(2).AddRelation(new Relation(layer2.GetNeuronById(2), -0.4));
+            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.25));
+            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(2), -0.4));
 
-            layer1.GetNeuronById(3).AddRelation(new Relation(layer2.GetNeuronById(1), 0));
-            layer1.GetNeuronById(3).AddRelation(new Relation(layer2.GetNeuronById(2), 0.9));
+            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(1), 0));
+            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.9));
 
-            layer2.GetNeuronById(1).AddRelation(new Relation(layer3.GetNeuronById(1), -1));
-            layer2.GetNeuronById(2).AddRelation(new Relation(layer3.GetNeuronById(1), 1));
+            layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), -1));
+            layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 1));
 
             neuralNetwork.AddLayer(layer1);
             neuralNetwork.AddLayer(layer2);
@@ -98,17 +98,17 @@ namespace CharRecognizer
             layer3.AddNeuron(new Neuron(1));
 
 
-            layer1.GetNeuronById(1).AddRelation(new Relation(layer2.GetNeuronById(1), 0.79));
-            layer1.GetNeuronById(1).AddRelation(new Relation(layer2.GetNeuronById(2), 0.85));
+            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.79));
+            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.85));
 
-            layer1.GetNeuronById(2).AddRelation(new Relation(layer2.GetNeuronById(1), 0.44));
-            layer1.GetNeuronById(2).AddRelation(new Relation(layer2.GetNeuronById(2), 0.43));
+            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.44));
+            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.43));
 
-            layer1.GetNeuronById(3).AddRelation(new Relation(layer2.GetNeuronById(1), 0.43));
-            layer1.GetNeuronById(3).AddRelation(new Relation(layer2.GetNeuronById(2), 0.29));
+            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.43));
+            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.29));
 
-            layer2.GetNeuronById(1).AddRelation(new Relation(layer3.GetNeuronById(1), 0.5));
-            layer2.GetNeuronById(2).AddRelation(new Relation(layer3.GetNeuronById(1), 0.52));
+            layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.5));
+            layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.52));
 
             neuralNetwork.AddLayer(layer1);
             neuralNetwork.AddLayer(layer2);

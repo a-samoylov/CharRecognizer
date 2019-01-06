@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MachineLearning.NeuralNetworkNS;
-using MachineLearning.NeuralNetworkNS.RelationNS;
+using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
 
 namespace MachineLearning.TeachingMethods
 {
@@ -26,7 +26,7 @@ namespace MachineLearning.TeachingMethods
             {
                 foreach (Neuron neuron in neuralNetwork.GetLayerById(currentLayerId - 1).GetListNeurons())
                 {
-                    foreach (Relation relation in neuron.GetRelations())
+                    foreach (Synapse relation in neuron.GetRelations())
                     {
                         relation.Weight = relation.Weight - (neuron.GetOutputData() * weightDelta * LEARNING_RATE);
                     }

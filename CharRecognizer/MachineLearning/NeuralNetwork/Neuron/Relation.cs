@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineLearning.NeuralNetworkNS.RelationNS
+namespace MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS
 {
     [Serializable]
-    class Relation
+    class Synapse
     {
         public Neuron Neuron { get; }
 
         public double Weight { get; set; }
 
-        public Relation(Neuron neuron, double weight)
+        public Synapse(Neuron neuron, double weight)
         {
             Neuron = neuron;
             Weight = weight;
