@@ -1,6 +1,6 @@
 using System;
 
-namespace CharRecognizer.MachineLearning.TeachingMethods.Error
+namespace CharRecognizer.MachineLearning.TeachingMethods.ErrorMethods
 {
     public class RootMse : IBase
     {

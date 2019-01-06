@@ -1,4 +1,4 @@
-namespace CharRecognizer.MachineLearning.TeachingMethods.Error
+namespace CharRecognizer.MachineLearning.TeachingMethods.ErrorMethods
 {
     public interface IBase
     {

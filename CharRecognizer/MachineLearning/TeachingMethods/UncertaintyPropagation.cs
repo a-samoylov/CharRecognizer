@@ -1,6 +1,6 @@
 ﻿using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
-using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
+using CharRecognizer.MachineLearning.TeachingMethods.ErrorMethods;
 
 namespace CharRecognizer.MachineLearning.TeachingMethods
 {
@@ -8,11 +8,13 @@ namespace CharRecognizer.MachineLearning.TeachingMethods
     {
         const double LEARNING_RATE = 0.1;
 
-        private IDifferentiable activationFunc;
+        private NeuralNetwork.Neuron.ActivationFunc.IDifferentiable activationFunc;
+        private ErrorMethods.IBase errorMethod;
         
         public UncertaintyPropagationMethod()
         {
-            activationFunc = new Sigmoid();//todo make choice
+            errorMethod    = new RootMse();
+            activationFunc = new NeuralNetwork.Neuron.ActivationFunc.Sigmoid();//todo make choice
         }
         
         public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] v, int successNeuronId, double expectedResult)
