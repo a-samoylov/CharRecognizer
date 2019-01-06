@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
 
 namespace MachineLearning.NeuralNetworkNS
@@ -21,6 +22,7 @@ namespace MachineLearning.NeuralNetworkNS
         {
             Id = id;
             this.isInFirsLayer = isInFirsLayer;
+            this.activationFunc = new Sigmoid();//todo make choice
         }
 
         public void SendSignals()
@@ -74,39 +76,10 @@ namespace MachineLearning.NeuralNetworkNS
         {
             relations.Add(relation);
         }
-                
+
         private double ActivationFunction(double signal)
         {
-            //todo aggregate ActivationFunction like object 
-
-            //return RelU(signal);
-            return Sigmoid(signal);
-            //return func(signal);
-        }
-
-        private double RelU(double x)
-        {
-            if (x < 0)
-            {
-                return 0;
-            }
-
-            return x;
-        }
-
-        private double Sigmoid(double x)
-        {
-            return 1.0 / (1.0 + Math.Pow(Math.E, -x));
-        }
-
-        private double Func(double x)
-        {
-            if (x >= 0.5)
-            {
-                return 1;
-            }
-
-            return 0;
+            return this.activationFunc.GetValue(signal);
         }
     }
 }

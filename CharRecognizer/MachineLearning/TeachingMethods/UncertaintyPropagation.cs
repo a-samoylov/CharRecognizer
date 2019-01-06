@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MachineLearning.NeuralNetworkNS;
+﻿using MachineLearning.NeuralNetworkNS;
 using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 
 namespace MachineLearning.TeachingMethods
 {
@@ -12,15 +8,22 @@ namespace MachineLearning.TeachingMethods
     {
         const double LEARNING_RATE = 0.1;
 
-        public NeuralNetwork GetTeachedNeuralNetwork(NeuralNetwork neuralNetwork, double[] v, int sucessNeuronId, double expectedResult)
+        private IDifferentiable activationFunc;
+        
+        public UncertaintyPropagationMethod()
+        {
+            activationFunc = new Sigmoid();//todo make choice
+        }
+        
+        public NeuralNetwork GetTaughtNeuralNetwork(NeuralNetwork neuralNetwork, double[] v, int successNeuronId, double expectedResult)
         {
             neuralNetwork.Clear();
 
             neuralNetwork.SetInputVector(v);
             neuralNetwork.Process();
 
-            double error       = neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetOutputData() - expectedResult;
-            double weightDelta = error * SigmoidDx(neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetInputData());
+            double error       = neuralNetwork.GetLastLayer().GetNeuronById(successNeuronId).GetOutputData() - expectedResult;
+            double weightDelta = error * activationFunc.GetDerivativeValue(neuralNetwork.GetLastLayer().GetNeuronById(successNeuronId).GetInputData());
 
             for (int currentLayerId = neuralNetwork.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
             {
@@ -37,17 +40,6 @@ namespace MachineLearning.TeachingMethods
             }
 
             return neuralNetwork;
-        }
-
-        //todo agregation obj
-        private double SigmoidDx(double x)
-        {
-            return Sigmoid(x) * (1 - Sigmoid(x));
-        }
-
-        private double Sigmoid(double x)
-        {
-            return 1.0 / (1.0 + Math.Pow(Math.E, -x));
         }
     }
 }

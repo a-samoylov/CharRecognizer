@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MachineLearning\NeuralNetwork\Neuron\ActivationFunc\IBase.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\Neuron\ActivationFunc\IDifferentiable.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\Neuron\ActivationFunc\Sigmoid.cs" />
     <Compile Include="MachineLearning\TeachingMethods\UncertaintyPropagation.cs" />
     <Compile Include="NumberRecognizerNeuralNetwork.cs" />
     <Compile Include="Form1.cs">
