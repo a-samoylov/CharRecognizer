@@ -27,7 +27,7 @@ namespace CharRecognizer
             UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
 
             Manager neuralNetworkManager = new Manager();
-            NeuralNetwork neuralNetwork = neuralNetworkManager.Get("TestErrorNeuralNetwork");
+            NeuralNetwork neuralNetwork = neuralNetworkManager.Get("TestNeuralNetwork");
 
             double[] v = new double[] { 1, 1, 0};
             uncertaintyPropagationMethod.GetTeachedNeuralNetwork(neuralNetwork, v, 1, 0);

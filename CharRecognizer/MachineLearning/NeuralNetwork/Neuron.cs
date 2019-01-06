@@ -12,13 +12,15 @@ namespace MachineLearning.NeuralNetworkNS
     {
         public int Id { get; }
 
+        private bool           isInFirsLayer = false;
         private bool           IsSendSignals = false;
         private List<Relation> relations = new List<Relation>();
         private double         inputData = 0;
 
-        public Neuron(int id)
+        public Neuron(int id, bool isInFirsLayer = false)
         {
             Id = id;
+            this.isInFirsLayer = isInFirsLayer;
         }
 
         public void SendSignals()
@@ -32,7 +34,7 @@ namespace MachineLearning.NeuralNetworkNS
             {
                 Neuron nextNeuron = relation.Neuron;
 
-                nextNeuron.AddSignal(this.GetData() * relation.Weight);
+                nextNeuron.AddSignal(this.GetOutputData() * relation.Weight);
             }
 
             IsSendSignals = true;
@@ -43,9 +45,19 @@ namespace MachineLearning.NeuralNetworkNS
             this.inputData += signal;
         }
 
-        public double GetData()
+        public double GetOutputData()
         {
+            if (this.isInFirsLayer)
+            {
+                return inputData;
+            }
+
             return ActivationFunction(inputData);
+        }
+
+        public double GetInputData()
+        {
+            return inputData;
         }
 
         public void ClearData()

@@ -18,7 +18,7 @@ namespace MachineLearning.NeuralNetworkNS
                 Layer layer = new Layer(layerId);
                 for (int neuronId = 0; neuronId < counrNeuronsInLayer[layerId]; neuronId++)
                 {
-                    Neuron neuron = new Neuron(neuronId);
+                    Neuron neuron = new Neuron(neuronId, true);
                     layer.AddNeuron(neuron);
                 }
 

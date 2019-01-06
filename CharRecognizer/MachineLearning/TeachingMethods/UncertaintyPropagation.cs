@@ -19,8 +19,8 @@ namespace MachineLearning.TeachingMethods
             neuralNetwork.SetInputVector(v);
             neuralNetwork.Process();
 
-            double error       = neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetData() - expectedResult;
-            double weightDelta = error * SigmoidDx(neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetData());
+            double error       = neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetOutputData() - expectedResult;
+            double weightDelta = error * SigmoidDx(neuralNetwork.GetLastLayer().GetNeuronById(sucessNeuronId).GetInputData());
 
             for (int currentLayerId = neuralNetwork.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
             {
@@ -28,10 +28,12 @@ namespace MachineLearning.TeachingMethods
                 {
                     foreach (Relation relation in neuron.GetRelations())
                     {
-                        relation.Weight = relation.Weight - (neuron.GetData() * weightDelta * LEARNING_RATE);
-                        //todo
+                        relation.Weight = relation.Weight - (neuron.GetOutputData() * weightDelta * LEARNING_RATE);
                     }
                 }
+
+                //todo
+                //error = weightDelta * 
             }
 
             return neuralNetwork;

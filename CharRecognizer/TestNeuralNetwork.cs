@@ -52,7 +52,7 @@ namespace CharRecognizer
             neuralNetwork.SetInputVector(inputData);
             neuralNetwork.Process();
 
-            if (neuralNetwork.GetLastLayer().GetNeuronById(1).GetData() >= MIN_CORRECT_ANSWER)
+            if (neuralNetwork.GetLastLayer().GetNeuronById(1).GetOutputData() >= MIN_CORRECT_ANSWER)
             {
                 return 1;
             }
