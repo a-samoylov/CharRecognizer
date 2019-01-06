@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +13,13 @@ namespace MachineLearning.NeuralNetworkNS
     {
         public int Id { get; }
 
-        private bool           isInFirsLayer = false;
-        private bool           IsSendSignals = false;
+        private bool          isInFirsLayer = false;
+        private bool          isSendSignals = false;
         private List<Synapse> relations = new List<Synapse>();
-        private double         inputData = 0;
+        private double        inputData = 0;
 
+        private IBase activationFunc;
+        
         public Neuron(int id, bool isInFirsLayer = false)
         {
             Id = id;
@@ -27,7 +29,7 @@ namespace MachineLearning.NeuralNetworkNS
 
         public void SendSignals()
         {
-            if (IsSendSignals)
+            if (isSendSignals)
             {
                 throw new Exception("This neuron has already send signals.");
             } 
@@ -39,7 +41,7 @@ namespace MachineLearning.NeuralNetworkNS
                 nextNeuron.AddSignal(this.GetOutputData() * relation.Weight);
             }
 
-            IsSendSignals = true;
+            isSendSignals = true;
         }
 
         public void AddSignal(double signal)
