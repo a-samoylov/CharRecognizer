@@ -56,12 +56,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MachineLearning\NeuralNetwork.cs" />
+    <Compile Include="MachineLearning\NeuralNetworkObj.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Factory.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Manager.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Layer.cs" />
-    <Compile Include="MachineLearning\NeuralNetwork\Neuron.cs" />
-    <Compile Include="MachineLearning\NeuralNetwork\Neuron\Relation.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\NeuronObj.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\Neuron\Synapse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestNeuralNetwork.cs" />

@@ -1,8 +1,8 @@
-﻿using MachineLearning.NeuralNetworkNS;
-using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
+﻿using CharRecognizer.MachineLearning.NeuralNetwork;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 
-namespace MachineLearning.TeachingMethods
+namespace CharRecognizer.MachineLearning.TeachingMethods
 {
     class UncertaintyPropagationMethod
     {
@@ -15,19 +15,19 @@ namespace MachineLearning.TeachingMethods
             activationFunc = new Sigmoid();//todo make choice
         }
         
-        public NeuralNetwork GetTaughtNeuralNetwork(NeuralNetwork neuralNetwork, double[] v, int successNeuronId, double expectedResult)
+        public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] v, int successNeuronId, double expectedResult)
         {
-            neuralNetwork.Clear();
+            neuralNetworkObj.Clear();
 
-            neuralNetwork.SetInputVector(v);
-            neuralNetwork.Process();
+            neuralNetworkObj.SetInputVector(v);
+            neuralNetworkObj.Process();
 
-            double error       = neuralNetwork.GetLastLayer().GetNeuronById(successNeuronId).GetOutputData() - expectedResult;
-            double weightDelta = error * activationFunc.GetDerivativeValue(neuralNetwork.GetLastLayer().GetNeuronById(successNeuronId).GetInputData());
+            double error       = neuralNetworkObj.GetLastLayer().GetNeuronById(successNeuronId).GetOutputData() - expectedResult;
+            double weightDelta = error * activationFunc.GetDerivativeValue(neuralNetworkObj.GetLastLayer().GetNeuronById(successNeuronId).GetInputData());
 
-            for (int currentLayerId = neuralNetwork.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
+            for (int currentLayerId = neuralNetworkObj.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
             {
-                foreach (Neuron neuron in neuralNetwork.GetLayerById(currentLayerId - 1).GetListNeurons())
+                foreach (NeuronObj neuron in neuralNetworkObj.GetLayerById(currentLayerId - 1).GetListNeurons())
                 {
                     foreach (Synapse relation in neuron.GetRelations())
                     {
@@ -39,7 +39,7 @@ namespace MachineLearning.TeachingMethods
                 //error = weightDelta * 
             }
 
-            return neuralNetwork;
+            return neuralNetworkObj;
         }
     }
 }

@@ -9,10 +9,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using MachineLearning.NeuralNetworkNS;
-using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
-using MachineLearning.TeachingMethods;
+using CharRecognizer.MachineLearning;
+using CharRecognizer.MachineLearning.NeuralNetwork;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
+using CharRecognizer.MachineLearning.TeachingMethods;
 
 namespace CharRecognizer
 {
@@ -27,10 +27,10 @@ namespace CharRecognizer
             UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
 
             Manager neuralNetworkManager = new Manager();
-            NeuralNetwork neuralNetwork = neuralNetworkManager.Get("TestNeuralNetwork");
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestNeuralNetwork");
 
             double[] v = new double[] { 1, 1, 0};
-            uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetwork, v, 1, 0);
+            uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, v, 1, 0);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,19 +46,19 @@ namespace CharRecognizer
         private void GenerateTestNetworkWithWeight()
         {
             string name = "TestNeuralNetwork";
-            NeuralNetwork neuralNetwork = new NeuralNetwork(name);
+            NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
             Layer layer1 = new Layer(1);
-            layer1.AddNeuron(new Neuron(1));
-            layer1.AddNeuron(new Neuron(2));
-            layer1.AddNeuron(new Neuron(3));
+            layer1.AddNeuron(new NeuronObj(1));
+            layer1.AddNeuron(new NeuronObj(2));
+            layer1.AddNeuron(new NeuronObj(3));
 
             Layer layer2 = new Layer(2);
-            layer2.AddNeuron(new Neuron(1));
-            layer2.AddNeuron(new Neuron(2));
+            layer2.AddNeuron(new NeuronObj(1));
+            layer2.AddNeuron(new NeuronObj(2));
 
             Layer layer3 = new Layer(3);
-            layer3.AddNeuron(new Neuron(1));
+            layer3.AddNeuron(new NeuronObj(1));
             
             layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.25));
             layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.5));
@@ -72,30 +72,30 @@ namespace CharRecognizer
             layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), -1));
             layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 1));
 
-            neuralNetwork.AddLayer(layer1);
-            neuralNetwork.AddLayer(layer2);
-            neuralNetwork.AddLayer(layer3);
+            neuralNetworkObj.AddLayer(layer1);
+            neuralNetworkObj.AddLayer(layer2);
+            neuralNetworkObj.AddLayer(layer3);
 
             Manager neuralNetworkManager = new Manager();
-            neuralNetworkManager.Save(neuralNetwork);
+            neuralNetworkManager.Save(neuralNetworkObj);
         }
 
         private void GenerateTestNetworkWithErrorWeight()
         {
             string name = "TestErrorNeuralNetwork";
-            NeuralNetwork neuralNetwork = new NeuralNetwork(name);
+            NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
             Layer layer1 = new Layer(1);
-            layer1.AddNeuron(new Neuron(1));
-            layer1.AddNeuron(new Neuron(2));
-            layer1.AddNeuron(new Neuron(3));
+            layer1.AddNeuron(new NeuronObj(1));
+            layer1.AddNeuron(new NeuronObj(2));
+            layer1.AddNeuron(new NeuronObj(3));
 
             Layer layer2 = new Layer(2);
-            layer2.AddNeuron(new Neuron(1));
-            layer2.AddNeuron(new Neuron(2));
+            layer2.AddNeuron(new NeuronObj(1));
+            layer2.AddNeuron(new NeuronObj(2));
 
             Layer layer3 = new Layer(3);
-            layer3.AddNeuron(new Neuron(1));
+            layer3.AddNeuron(new NeuronObj(1));
 
 
             layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.79));
@@ -110,12 +110,12 @@ namespace CharRecognizer
             layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.5));
             layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.52));
 
-            neuralNetwork.AddLayer(layer1);
-            neuralNetwork.AddLayer(layer2);
-            neuralNetwork.AddLayer(layer3);
+            neuralNetworkObj.AddLayer(layer1);
+            neuralNetworkObj.AddLayer(layer2);
+            neuralNetworkObj.AddLayer(layer3);
 
             Manager neuralNetworkManager = new Manager();
-            neuralNetworkManager.Save(neuralNetwork);
+            neuralNetworkManager.Save(neuralNetworkObj);
         }
 
         private void Form1_Load(object sender, EventArgs e)

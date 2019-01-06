@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MachineLearning.NeuralNetworkNS;
+using CharRecognizer.MachineLearning;
+using CharRecognizer.MachineLearning.NeuralNetwork;
 
 namespace CharRecognizer
 {
@@ -18,10 +19,10 @@ namespace CharRecognizer
         public void Generate()
         {
             Factory neuralNetworkFactory = new Factory();
-            NeuralNetwork neuralNetwork = neuralNetworkFactory.CreateWithRandomWeight(NAME, neuronsInLayer);
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkFactory.CreateWithRandomWeight(NAME, neuronsInLayer);
 
             Manager neuralNetworkManager = new Manager();
-            neuralNetworkManager.Save(neuralNetwork);
+            neuralNetworkManager.Save(neuralNetworkObj);
         }
 
         public int GetNumberFromImgVector(double[] inputData)
@@ -33,10 +34,10 @@ namespace CharRecognizer
 
             //todo load network LazyLoad
             Manager neuralNetworkManager = new Manager();
-            NeuralNetwork neuralNetwork  = neuralNetworkManager.Get(NAME);
+            NeuralNetworkObj neuralNetworkObj  = neuralNetworkManager.Get(NAME);
 
-            neuralNetwork.SetInputVector(inputData);
-            neuralNetwork.Process();
+            neuralNetworkObj.SetInputVector(inputData);
+            neuralNetworkObj.Process();
 
             //for neuralNetwork.GetLastLayer();
 

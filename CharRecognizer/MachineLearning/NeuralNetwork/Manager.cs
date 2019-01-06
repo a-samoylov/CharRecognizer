@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     class Manager
     {
-        public NeuralNetwork Get(string name)
+        public NeuralNetworkObj Get(string name)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             using (FileStream fs = new FileStream(name + ".dat", FileMode.Open))
             {
-                return (NeuralNetwork)formatter.Deserialize(fs);
+                return (NeuralNetworkObj)formatter.Deserialize(fs);
             }
         }
 
-        public void Save(NeuralNetwork neuralNetwork)
+        public void Save(NeuralNetworkObj neuralNetworkObj)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(neuralNetwork.Name + ".dat", FileMode.Create))
+            using (FileStream fs = new FileStream(neuralNetworkObj.Name + ".dat", FileMode.Create))
             {
-                formatter.Serialize(fs, neuralNetwork);
+                formatter.Serialize(fs, neuralNetworkObj);
             }
         }
     }

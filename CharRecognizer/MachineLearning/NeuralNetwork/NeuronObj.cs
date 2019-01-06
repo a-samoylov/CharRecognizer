@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
-using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     [Serializable]
-    class Neuron
+    class NeuronObj
     {
         public int Id { get; }
 
@@ -20,7 +17,7 @@ namespace MachineLearning.NeuralNetworkNS
 
         private IBase activationFunc;
         
-        public Neuron(int id, bool isInFirsLayer = false)
+        public NeuronObj(int id, bool isInFirsLayer = false)
         {
             Id = id;
             this.isInFirsLayer = isInFirsLayer;
@@ -36,9 +33,9 @@ namespace MachineLearning.NeuralNetworkNS
 
             foreach (Synapse relation in relations)
             {
-                Neuron nextNeuron = relation.Neuron;
+                NeuronObj nextNeuronObj = relation.NeuronObj;
 
-                nextNeuron.AddSignal(this.GetOutputData() * relation.Weight);
+                nextNeuronObj.AddSignal(this.GetOutputData() * relation.Weight);
             }
 
             isSendSignals = true;

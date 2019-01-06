@@ -1,40 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MachineLearning.NeuralNetworkNS.NeuronNS.SynapseNS;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     class Factory
     {
-        public NeuralNetwork CreateWithRandomWeight(string name, int[] counrNeuronsInLayer)
+        public NeuralNetworkObj CreateWithRandomWeight(string name, int[] counrNeuronsInLayer)
         {
-            NeuralNetwork neuralNetwork = new NeuralNetwork(name);
+            NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
             for (int layerId = 0; layerId < counrNeuronsInLayer.Length; layerId++)
             {
                 Layer layer = new Layer(layerId);
                 for (int neuronId = 0; neuronId < counrNeuronsInLayer[layerId]; neuronId++)
                 {
-                    Neuron neuron = new Neuron(neuronId, true);
-                    layer.AddNeuron(neuron);
+                    NeuronObj neuronObj = new NeuronObj(neuronId, true);
+                    layer.AddNeuron(neuronObj);
                 }
 
-                neuralNetwork.AddLayer(layer);
+                neuralNetworkObj.AddLayer(layer);
             }
 
             Random rand        = new Random();
-            List<Layer> layers = neuralNetwork.GetListLayers();
+            List<Layer> layers = neuralNetworkObj.GetListLayers();
             for (int layerId = 0; layerId < layers.Count - 1; layerId++)
             {
                 Layer layer     = layers[layerId];
                 Layer nextLayer = layers[layerId + 1];
 
-                foreach (Neuron neuron in layer.GetListNeurons())
+                foreach (NeuronObj neuron in layer.GetListNeurons())
                 {
-                    foreach (Neuron nextLayerNeuron in nextLayer.GetListNeurons())
+                    foreach (NeuronObj nextLayerNeuron in nextLayer.GetListNeurons())
                     {
                         double weight = Convert.ToDouble(rand.Next(-100, 100)) / 100;
                         neuron.AddRelation(new Synapse(nextLayerNeuron, weight));
@@ -42,7 +39,7 @@ namespace MachineLearning.NeuralNetworkNS
                 }
             }
 
-            return neuralNetwork;
+            return neuralNetworkObj;
         }
     }
 }

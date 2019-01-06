@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     [Serializable]
     class Layer
     {
         public int Id { get; }
 
-        private List<Neuron> neurons = new List<Neuron>();
+        private List<NeuronObj> neurons = new List<NeuronObj>();
                
         public Layer(int id)
         {
             Id = id;
         }
 
-        public List<Neuron> GetListNeurons()
+        public List<NeuronObj> GetListNeurons()
         {
             return neurons;
         }
 
-        public Neuron GetNeuronById(int id)
+        public NeuronObj GetNeuronById(int id)
         {
-            foreach (Neuron neuron in neurons)
+            foreach (NeuronObj neuron in neurons)
             {
                 if (neuron.Id == id)
                 {
@@ -36,19 +33,19 @@ namespace MachineLearning.NeuralNetworkNS
             return null;
         }
 
-        public void AddNeuron(Neuron neuron)
+        public void AddNeuron(NeuronObj neuronObj)
         {
-            if (GetNeuronById(neuron.Id) != null)
+            if (GetNeuronById(neuronObj.Id) != null)
             {
                 throw new Exception("Neuron with this id has already added.");
             }
 
-            neurons.Add(neuron);
+            neurons.Add(neuronObj);
         }
 
         public void SendNextLayerSignal()
         {
-            foreach (Neuron neuron in neurons)
+            foreach (NeuronObj neuron in neurons)
             {
                 neuron.SendSignals();
             }

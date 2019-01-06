@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CharRecognizer.MachineLearning.NeuralNetwork;
 
-namespace MachineLearning.NeuralNetworkNS
+namespace CharRecognizer.MachineLearning
 {
     [Serializable]
-    class NeuralNetwork
+    class NeuralNetworkObj
     {
         public string Name { get; }
 
         private List<Layer> layers    = new List<Layer>();
         private bool isSetInputVector = false;
 
-        public NeuralNetwork(string name)
+        public NeuralNetworkObj(string name)
         {
             Name = name;
         }
@@ -69,7 +67,7 @@ namespace MachineLearning.NeuralNetworkNS
 
         public void SetInputVector(double[] v)
         {
-            List<Neuron> neurons = this.GetFirstLayer().GetListNeurons();
+            List<NeuronObj> neurons = this.GetFirstLayer().GetListNeurons();
             if (v.Length != neurons.Count)
             {
                 throw new Exception("Invalid input vector.");
@@ -93,7 +91,7 @@ namespace MachineLearning.NeuralNetworkNS
 
             foreach (Layer layer in layers)
             {
-                foreach (Neuron neuron in layer.GetListNeurons())
+                foreach (NeuronObj neuron in layer.GetListNeurons())
                 {
                     neuron.SendSignals();
                 }
@@ -106,7 +104,7 @@ namespace MachineLearning.NeuralNetworkNS
 
             foreach (Layer layer in layers)
             {
-                foreach (Neuron neuron in layer.GetListNeurons())
+                foreach (NeuronObj neuron in layer.GetListNeurons())
                 {
                     neuron.ClearData();
                 }
