@@ -12,8 +12,8 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
 
         private bool          isInFirsLayer = false;
         private bool          isSendSignals = false;
-        private List<Synapse> relations = new List<Synapse>();
-        private double        inputData = 0;
+        private List<Synapse> synapses      = new List<Synapse>();
+        private double        inputData     = 0;
 
         private IBase activationFunc;
         
@@ -31,19 +31,19 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
                 throw new Exception("This neuron has already send signals.");
             } 
 
-            foreach (Synapse relation in relations)
+            foreach (Synapse synapse in synapses)
             {
-                NeuronObj nextNeuronObj = relation.NeuronObj;
+                NeuronObj nextNeuronObj = synapse.NeuronObj;
 
-                nextNeuronObj.AddSignal(this.GetOutputData() * relation.Weight);
+                nextNeuronObj.AddInputData(this.GetOutputData() * synapse.Weight);
             }
 
             isSendSignals = true;
         }
 
-        public void AddSignal(double signal)
+        public void AddInputData(double data)
         {
-            this.inputData += signal;
+            this.inputData += data;
         }
 
         public double GetOutputData()
@@ -66,14 +66,14 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
             this.inputData = 0;
         }
 
-        public List<Synapse> GetRelations()
+        public List<Synapse> GetSynapses()
         {
-            return relations;
+            return synapses;
         }
 
-        public void AddRelation(Synapse relation)
+        public void AddSynapse(Synapse synapse)
         {
-            relations.Add(relation);
+            synapses.Add(synapse);
         }
 
         private double ActivationFunction(double signal)

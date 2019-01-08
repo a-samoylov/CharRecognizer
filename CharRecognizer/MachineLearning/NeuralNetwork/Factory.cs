@@ -34,7 +34,7 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
                     foreach (NeuronObj nextLayerNeuron in nextLayer.GetListNeurons())
                     {
                         double weight = Convert.ToDouble(rand.Next(-100, 100)) / 100;
-                        neuron.AddRelation(new Synapse(nextLayerNeuron, weight));
+                        neuron.AddSynapse(new Synapse(nextLayerNeuron, weight));
                     }
                 }
             }

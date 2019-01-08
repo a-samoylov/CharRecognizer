@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using CharRecognizer.MachineLearning;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 using CharRecognizer.MachineLearning.TeachingMethods;
 
 namespace CharRecognizer
@@ -60,17 +61,17 @@ namespace CharRecognizer
             Layer layer3 = new Layer(3);
             layer3.AddNeuron(new NeuronObj(1));
             
-            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.5));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.25));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.5));
 
-            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(2), -0.4));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.25));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(2), -0.4));
 
-            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(1), 0));
-            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.9));
+            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0));
+            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.9));
 
-            layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), -1));
-            layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 1));
+            layer2.GetNeuronById(1).AddSynapse(new Synapse(layer3.GetNeuronById(1), -1));
+            layer2.GetNeuronById(2).AddSynapse(new Synapse(layer3.GetNeuronById(1), 1));
 
             neuralNetworkObj.AddLayer(layer1);
             neuralNetworkObj.AddLayer(layer2);
@@ -98,17 +99,17 @@ namespace CharRecognizer
             layer3.AddNeuron(new NeuronObj(1));
 
 
-            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.79));
-            layer1.GetNeuronById(1).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.85));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.79));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.85));
 
-            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.44));
-            layer1.GetNeuronById(2).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.43));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.44));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.43));
 
-            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(1), 0.43));
-            layer1.GetNeuronById(3).AddRelation(new Synapse(layer2.GetNeuronById(2), 0.29));
+            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.43));
+            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.29));
 
-            layer2.GetNeuronById(1).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.5));
-            layer2.GetNeuronById(2).AddRelation(new Synapse(layer3.GetNeuronById(1), 0.52));
+            layer2.GetNeuronById(1).AddSynapse(new Synapse(layer3.GetNeuronById(1), 0.5));
+            layer2.GetNeuronById(2).AddSynapse(new Synapse(layer3.GetNeuronById(1), 0.52));
 
             neuralNetworkObj.AddLayer(layer1);
             neuralNetworkObj.AddLayer(layer2);
@@ -120,7 +121,11 @@ namespace CharRecognizer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Sigmoid sigmoid = new Sigmoid();
 
+            double a = (1 - 0.33) * sigmoid.GetDerivativeValue(-0.672);
+            double b =  (1 - 0.33) * ( (1 - 0.33) * 0.33 ) ;
+            double c = 0 + 1;
         }
     }
 }

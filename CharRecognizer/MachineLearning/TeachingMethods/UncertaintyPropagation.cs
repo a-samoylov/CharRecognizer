@@ -31,7 +31,7 @@ namespace CharRecognizer.MachineLearning.TeachingMethods
             {
                 foreach (NeuronObj neuron in neuralNetworkObj.GetLayerById(currentLayerId - 1).GetListNeurons())
                 {
-                    foreach (Synapse relation in neuron.GetRelations())
+                    foreach (Synapse relation in neuron.GetSynapses())
                     {
                         relation.Weight = relation.Weight - (neuron.GetOutputData() * weightDelta * LEARNING_RATE);
                     }
