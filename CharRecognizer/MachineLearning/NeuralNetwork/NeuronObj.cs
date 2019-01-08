@@ -11,19 +11,39 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
         public int Id { get; }
 
         private bool          isInFirsLayer = false;
+        private bool          isInLastLayer = false;
         private bool          isSendSignals = false;
         private List<Synapse> synapses      = new List<Synapse>();
         private double        inputData     = 0;
 
         private IBase activationFunc;
         
-        public NeuronObj(int id, bool isInFirsLayer = false)
+        public NeuronObj(int id)
         {
             Id = id;
-            this.isInFirsLayer = isInFirsLayer;
             this.activationFunc = new Sigmoid();//todo make choice
         }
 
+        public bool IsInFirstLayer()
+        {
+            return isInFirsLayer;
+        }
+        
+        public void SetPositionInFirstLayer()
+        {
+            isInFirsLayer = true;
+        }
+
+        public bool IsInLastLayer()
+        {
+            return isInLastLayer;
+        }
+        
+        public void SetPositionInLastLayer()
+        {
+            isInLastLayer = true;
+        }
+        
         public void SendSignals()
         {
             if (isSendSignals)

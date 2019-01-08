@@ -2,6 +2,7 @@ using System;
 
 namespace CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc
 {
+    [Serializable]
     public class Sigmoid : IDifferentiable
     {
         public double GetValue(double x)

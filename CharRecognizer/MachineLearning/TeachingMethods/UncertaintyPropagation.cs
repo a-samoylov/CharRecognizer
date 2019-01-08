@@ -1,4 +1,5 @@
-﻿using CharRecognizer.MachineLearning.NeuralNetwork;
+﻿using System.Collections.Generic;
+using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 using CharRecognizer.MachineLearning.TeachingMethods.ErrorMethods;
 
@@ -17,28 +18,27 @@ namespace CharRecognizer.MachineLearning.TeachingMethods
             activationFunc = new NeuralNetwork.Neuron.ActivationFunc.Sigmoid();//todo make choice
         }
         
-        public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] v, int successNeuronId, double expectedResult)
+        public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedResultVector)
         {
             neuralNetworkObj.Clear();
 
-            neuralNetworkObj.SetInputVector(v);
+            neuralNetworkObj.SetInputVector(inputVector);
             neuralNetworkObj.Process();
 
-            double error       = neuralNetworkObj.GetLastLayer().GetNeuronById(successNeuronId).GetOutputData() - expectedResult;
-            double weightDelta = error * activationFunc.GetDerivativeValue(neuralNetworkObj.GetLastLayer().GetNeuronById(successNeuronId).GetInputData());
 
-            for (int currentLayerId = neuralNetworkObj.GetListLayers().Count - 1; currentLayerId > 0; currentLayerId--)
+            double[] resultVector   = new double[neuralNetworkObj.GetLastLayer().GetCountNeurons()];
+            List<NeuronObj> neurons = neuralNetworkObj.GetLastLayer().GetListNeurons();
+            for (int i = 0; i < neurons.Count; i++)
             {
-                foreach (NeuronObj neuron in neuralNetworkObj.GetLayerById(currentLayerId - 1).GetListNeurons())
-                {
-                    foreach (Synapse relation in neuron.GetSynapses())
-                    {
-                        relation.Weight = relation.Weight - (neuron.GetOutputData() * weightDelta * LEARNING_RATE);
-                    }
-                }
+                resultVector[i] = neurons[i].GetOutputData();
+            }
+            
+            //double error = errorMethod.GetError(expectedResultVector, resultVector);
+            //double weightDelta = 0;
 
-                //todo
-                //error = weightDelta * 
+            for (int currentLayerId = neuralNetworkObj.GetCountLayers() - 1; currentLayerId > 0; currentLayerId--)
+            {
+               
             }
 
             return neuralNetworkObj;

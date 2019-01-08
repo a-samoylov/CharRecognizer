@@ -8,6 +8,8 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
     {
         public int Id { get; }
 
+        private bool            isFirst = false;
+        private bool            isLast  = false;
         private List<NeuronObj> neurons = new List<NeuronObj>();
                
         public Layer(int id)
@@ -15,6 +17,16 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
             Id = id;
         }
 
+        public void SetPositionFirst()
+        {
+            isFirst = true;
+        }
+
+        public void SetPositionLast()
+        {
+            isLast = true;
+        }
+        
         public List<NeuronObj> GetListNeurons()
         {
             return neurons;
@@ -43,6 +55,15 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
             if (GetNeuronById(neuronObj.Id) != null)
             {
                 throw new Exception("Neuron with this id has already added.");
+            }
+
+            if (isFirst)
+            {
+                neuronObj.SetPositionInFirstLayer();
+            } 
+            else if (isLast)
+            {
+                neuronObj.SetPositionInLastLayer();
             }
 
             neurons.Add(neuronObj);

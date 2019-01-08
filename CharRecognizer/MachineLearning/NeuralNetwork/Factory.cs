@@ -13,9 +13,18 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
             for (int layerId = 0; layerId < countNeuronsInLayer.Length; layerId++)
             {
                 Layer layer = new Layer(layerId);
+                if (layerId == 0)
+                {
+                    layer.SetPositionFirst();
+                }
+                else if (layerId == countNeuronsInLayer.Length - 1)
+                {
+                    layer.SetPositionLast();
+                }
+                
                 for (int neuronId = 0; neuronId < countNeuronsInLayer[layerId]; neuronId++)
                 {
-                    NeuronObj neuronObj = new NeuronObj(neuronId, true);
+                    NeuronObj neuronObj = new NeuronObj(neuronId);
                     layer.AddNeuron(neuronObj);
                 }
 

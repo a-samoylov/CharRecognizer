@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,16 +22,7 @@ namespace CharRecognizer
         public Form1()
         {
             InitializeComponent();
-
-            //GenerateTestNetworkWithErrorWeight();
-
-            UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
-
-            Manager neuralNetworkManager = new Manager();
-            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestNeuralNetwork");
-
-            double[] v = new double[] { 1, 1, 0};
-            uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, v, 1, 0);
+            //GenerateTestNetworkWithWeight();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -44,12 +35,26 @@ namespace CharRecognizer
             MessageBox.Show(network.GetAnswer(data).ToString());
         }
 
+        private void Test()
+        {
+            Manager neuralNetworkManager = new Manager();
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestNeuralNetwork");
+
+            double[] inputVector = new double[] { 1, 1, 0};
+            double[] expectedVector = new double[] { 0 };
+            
+            UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
+            uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, inputVector, expectedVector);
+        }
+
         private void GenerateTestNetworkWithWeight()
         {
             string name = "TestNeuralNetwork";
             NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
             Layer layer1 = new Layer(1);
+            layer1.SetPositionFirst();
+            
             layer1.AddNeuron(new NeuronObj(1));
             layer1.AddNeuron(new NeuronObj(2));
             layer1.AddNeuron(new NeuronObj(3));
@@ -59,6 +64,8 @@ namespace CharRecognizer
             layer2.AddNeuron(new NeuronObj(2));
 
             Layer layer3 = new Layer(3);
+            layer3.SetPositionLast();
+            
             layer3.AddNeuron(new NeuronObj(1));
             
             layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.25));
@@ -121,11 +128,7 @@ namespace CharRecognizer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Sigmoid sigmoid = new Sigmoid();
-
-            double a = (1 - 0.33) * sigmoid.GetDerivativeValue(-0.672);
-            double b =  (1 - 0.33) * ( (1 - 0.33) * 0.33 ) ;
-            double c = 0 + 1;
+            Test();
         }
     }
 }
