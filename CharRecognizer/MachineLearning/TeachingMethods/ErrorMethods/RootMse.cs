@@ -4,7 +4,7 @@ namespace CharRecognizer.MachineLearning.TeachingMethods.ErrorMethods
 {
     public class RootMse : IBase
     {
-        public double Get(double[] expected, double[] results)
+        public double GetError(double[] expected, double[] results)
         {
             if (expected.Length != results.Length)
             {

@@ -41,6 +41,11 @@ namespace CharRecognizer.MachineLearning
         {
             return layers;
         }
+        
+        public int GetCountLayers()
+        {
+            return layers.Count;
+        }
 
         public Layer GetLayerById(int id)
         {
@@ -67,18 +72,17 @@ namespace CharRecognizer.MachineLearning
 
         public void SetInputVector(double[] v)
         {
-            List<NeuronObj> neurons = this.GetFirstLayer().GetListNeurons();
-            if (v.Length != neurons.Count)
+            if (v.Length != this.GetFirstLayer().GetCountNeurons())
             {
                 throw new Exception("Invalid input vector.");
             }
 
             isSetInputVector = true;
 
+            List<NeuronObj> neurons = this.GetFirstLayer().GetListNeurons();
             for (int i = 0; i < neurons.Count; i++)
             {
                 neurons[i].AddInputData(v[i]);
-                //neurons[i].IsActive = true;
             }
         }
 

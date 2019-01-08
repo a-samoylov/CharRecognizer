@@ -20,6 +20,11 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
             return neurons;
         }
 
+        public int GetCountNeurons()
+        {
+            return neurons.Count;
+        }
+
         public NeuronObj GetNeuronById(int id)
         {
             foreach (NeuronObj neuron in neurons)
