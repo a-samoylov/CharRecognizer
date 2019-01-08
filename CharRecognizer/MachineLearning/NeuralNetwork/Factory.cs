@@ -6,14 +6,14 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     class Factory
     {
-        public NeuralNetworkObj CreateWithRandomWeight(string name, int[] counrNeuronsInLayer)
+        public NeuralNetworkObj CreateWithRandomWeight(string name, int[] countNeuronsInLayer)
         {
             NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
-            for (int layerId = 0; layerId < counrNeuronsInLayer.Length; layerId++)
+            for (int layerId = 0; layerId < countNeuronsInLayer.Length; layerId++)
             {
                 Layer layer = new Layer(layerId);
-                for (int neuronId = 0; neuronId < counrNeuronsInLayer[layerId]; neuronId++)
+                for (int neuronId = 0; neuronId < countNeuronsInLayer[layerId]; neuronId++)
                 {
                     NeuronObj neuronObj = new NeuronObj(neuronId, true);
                     layer.AddNeuron(neuronObj);
