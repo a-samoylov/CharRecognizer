@@ -35,12 +35,12 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                     else
                     {
                         double sumWeightDeltaInNextLayer = 0;
-                        foreach (EducationNeuron nextLayerEducationNeuron in educationNeuron.NextEducationLayer.GetListNeurons())
+                        foreach (EducationNeuron nextEducationNeuron in educationNeuron.GetNextEducationNeurons())
                         {
-                            sumWeightDeltaInNextLayer += nextLayerEducationNeuron.WeightDelta * 1;
+                            //sumWeightDeltaInNextLayer += ;
                         }
                 
-                        educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) ;
+                        educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) * sumWeightDeltaInNextLayer;
                     }
                 }
             }
@@ -111,7 +111,10 @@ namespace CharRecognizer.MachineLearning.EducationMethods
 
                 foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
                 {
-                    educationNeuron.NextEducationLayer = nextEducationLayer;
+                    foreach (EducationNeuron nextLayerEducationNeuron in nextEducationLayer.GetListNeurons())
+                    {
+                        educationNeuron.AddNextEducationNeuron(nextLayerEducationNeuron);
+                    }
                 }
             }
 

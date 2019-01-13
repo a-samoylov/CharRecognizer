@@ -9,11 +9,21 @@ namespace CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation
         
         public double WeightDelta { get; set; }
 
-        public EducationLayer NextEducationLayer { get; set; }
+        private List<EducationNeuron> nextEducationNeurons = new List<EducationNeuron>();
         
         public EducationNeuron(NeuronObj neuronObj)
         {
             NeuronObj = neuronObj;
+        }
+
+        public void AddNextEducationNeuron(EducationNeuron nextEducationNeuron)
+        {
+            this.nextEducationNeurons.Add(nextEducationNeuron);
+        }
+
+        public List<EducationNeuron> GetNextEducationNeurons()
+        {
+            return this.nextEducationNeurons;
         }
     }
 }
