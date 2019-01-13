@@ -10,11 +10,13 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
     {
         public int Id { get; }
 
-        private bool          isInFirsLayer = false;
-        private bool          isInLastLayer = false;
-        private bool          isSendSignals = false;
-        private List<Synapse> synapses      = new List<Synapse>();
-        private double        inputData     = 0;
+        private bool          isInFirsLayer          = false;
+        private bool          isInLastLayer          = false;
+        private bool          isSendSignals          = false;
+        private bool          isCalculatedOutputData = false;
+        private List<Synapse> synapses               = new List<Synapse>();
+        private double        inputData              = 0;
+        private double        outputData             = 0;
 
         private IBase activationFunc;
         
@@ -68,12 +70,22 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
 
         public double GetOutputData()
         {
+            if (this.isCalculatedOutputData)
+            {
+                return this.outputData;
+            }
+            
             if (this.isInFirsLayer)
             {
-                return inputData;
+                this.outputData = inputData;
+                
+            }
+            else
+            {
+                this.outputData = ActivationFunction(inputData);
             }
 
-            return ActivationFunction(inputData);
+            return this.outputData;
         }
 
         public double GetInputData()
