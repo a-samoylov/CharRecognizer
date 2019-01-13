@@ -25,14 +25,16 @@ namespace CharRecognizer.MachineLearning.EducationMethods
             double[] resultVector = this.GetResultVector(neuralNetworkObj, inputVector);
 
             List<EducationLayer> educationNetwork = this.GetEducationNetwork(neuralNetworkObj);
-            foreach (EducationLayer educationLayer in educationNetwork)
+            for (int educationNeuronId = educationNetwork.Count - 1; educationNeuronId > 0; educationNeuronId--)
             {
+                EducationLayer educationLayer = educationNetwork[educationNeuronId];
+                
                 foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
                 {
                     NeuronObj neuron = educationNeuron.NeuronObj;
                     if (neuron.IsInLastLayer())
                     {
-                        educationNeuron.WeightDelta = expectedResultVector[neuron.Id] - inputVector[neuron.Id] * activationFunc.GetDerivativeValue(neuron.GetInputData());
+                        educationNeuron.WeightDelta = (expectedResultVector[neuron.Id - 1] - resultVector[neuron.Id - 1]) * activationFunc.GetDerivativeValue(neuron.GetInputData());
                     }
                     else
                     {
@@ -136,7 +138,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
         {
             foreach (Synapse synapse in neuralNetworkObj.GetLayerById(currentLayerId).GetNeuronById(neuronId).GetSynapses())
             {
-                if (synapse.NeuronObj.Id == neuronId)
+                if (synapse.NeuronObj.Id == nextNeuronId)
                 {
                     return synapse;
                 }
