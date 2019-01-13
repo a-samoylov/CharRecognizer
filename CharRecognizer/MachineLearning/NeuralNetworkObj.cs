@@ -5,7 +5,7 @@ using CharRecognizer.MachineLearning.NeuralNetwork;
 namespace CharRecognizer.MachineLearning
 {
     [Serializable]
-    class NeuralNetworkObj
+    public class NeuralNetworkObj
     {
         public string Name { get; }
 

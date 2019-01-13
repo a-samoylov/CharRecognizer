@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     [Serializable]
-    class Layer
+    public class Layer
     {
         public int Id { get; }
 

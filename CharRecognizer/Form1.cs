@@ -13,7 +13,7 @@ using CharRecognizer.MachineLearning;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
-using CharRecognizer.MachineLearning.TeachingMethods;
+using CharRecognizer.MachineLearning.EducationMethods;
 
 namespace CharRecognizer
 {

@@ -4,7 +4,7 @@ using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 
 namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
-    class Factory
+    public class Factory
     {
         public NeuralNetworkObj CreateWithRandomWeight(string name, int[] countNeuronsInLayer)
         {

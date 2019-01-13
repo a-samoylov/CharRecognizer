@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
-    class Manager
+    public class Manager
     {
         public NeuralNetworkObj Get(string name)
         {

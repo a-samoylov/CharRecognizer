@@ -6,7 +6,7 @@ using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 namespace CharRecognizer.MachineLearning.NeuralNetwork
 {
     [Serializable]
-    class NeuronObj
+    public class NeuronObj
     {
         public int Id { get; }
 
@@ -53,9 +53,9 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
 
             foreach (Synapse synapse in synapses)
             {
-                NeuronObj nextNeuronObj = synapse.NeuronObj;
+                NeuronObj nextNeuron = synapse.NeuronObj;
 
-                nextNeuronObj.AddInputData(this.GetOutputData() * synapse.Weight);
+                nextNeuron.AddInputData(this.GetOutputData() * synapse.Weight);
             }
 
             isSendSignals = true;

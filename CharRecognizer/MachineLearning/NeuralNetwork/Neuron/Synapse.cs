@@ -3,7 +3,7 @@
 namespace CharRecognizer.MachineLearning.NeuralNetwork.Neuron
 {
     [Serializable]
-    class Synapse
+    public class Synapse
     {
         public NeuronObj NeuronObj { get; }
 
