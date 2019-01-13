@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 
 namespace CharRecognizer.MachineLearning.EducationMethods
 {
@@ -35,18 +37,15 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                     else
                     {
                         double sumWeightDeltaInNextLayer = 0;
-                        foreach (EducationNeuron nextEducationNeuron in educationNeuron.GetNextEducationNeurons())
+                        foreach (EducationSynapse educationSynapse in educationNeuron.GetEducationSynapses())
                         {
-                            //sumWeightDeltaInNextLayer += ;
+                            sumWeightDeltaInNextLayer += educationSynapse.Weight * educationSynapse.EducationNeuron.WeightDelta;
                         }
                 
                         educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) * sumWeightDeltaInNextLayer;
                     }
                 }
             }
-           
-      
-
             
             double error = errorMethod.GetError(expectedResultVector, resultVector);
             double weightDelta = 0;
@@ -95,7 +94,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
             List<EducationLayer> result = new List<EducationLayer>();
             foreach (Layer layer in neuralNetworkObj.GetListLayers())
             {
-                EducationLayer educationLayer = new EducationLayer();
+                EducationLayer educationLayer = new EducationLayer(layer.Id);
                 foreach (NeuronObj neuron in layer.GetListNeurons())
                 {
                     educationLayer.AddNeuron(new EducationNeuron(neuron));
@@ -113,12 +112,37 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                 {
                     foreach (EducationNeuron nextLayerEducationNeuron in nextEducationLayer.GetListNeurons())
                     {
-                        educationNeuron.AddNextEducationNeuron(nextLayerEducationNeuron);
+                        Synapse synapse = this.GetSynapse(
+                            neuralNetworkObj,
+                            educationLayerId, 
+                            educationNeuron.NeuronObj.Id, 
+                            nextLayerEducationNeuron.NeuronObj.Id
+                        );
+
+                        if (synapse == null)
+                        {
+                            throw new Exception("Something goes wrong with id layers.");
+                        }
+                        
+                        educationNeuron.AddEducationSynapse(new EducationSynapse(nextLayerEducationNeuron, synapse.Weight));
                     }
                 }
             }
 
             return result;
+        }
+
+        private Synapse GetSynapse(NeuralNetworkObj neuralNetworkObj, int currentLayerId, int neuronId, int nextNeuronId)
+        {
+            foreach (Synapse synapse in neuralNetworkObj.GetLayerById(currentLayerId).GetNeuronById(neuronId).GetSynapses())
+            {
+                if (synapse.NeuronObj.Id == neuronId)
+                {
+                    return synapse;
+                }
+            }
+
+            return null;
         }
     }
 }
