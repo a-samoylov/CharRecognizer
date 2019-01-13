@@ -114,7 +114,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                     {
                         Synapse synapse = this.GetSynapse(
                             neuralNetworkObj,
-                            educationLayerId, 
+                            educationLayer.Id, 
                             educationNeuron.NeuronObj.Id, 
                             nextLayerEducationNeuron.NeuronObj.Id
                         );

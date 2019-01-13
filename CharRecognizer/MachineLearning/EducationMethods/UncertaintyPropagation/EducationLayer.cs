@@ -10,7 +10,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation
 
         public EducationLayer(int id)
         {
-            Id = Id;
+            Id = id;
         }
         
         public void AddNeuron(EducationNeuron neuron)
