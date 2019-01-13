@@ -1,4 +1,4 @@
-using CharRecognizer.MachineLearning.NeuralNetwork;
+using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 
 namespace CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation
 {
@@ -6,12 +6,12 @@ namespace CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation
     {
         public EducationNeuron EducationNeuron { get; }
 
-        public double Weight { get; }
+        public Synapse Synapse { get; }
 
-        public EducationSynapse(EducationNeuron educationNeuron, double weight)
+        public EducationSynapse(EducationNeuron educationNeuron, Synapse synapse)
         {
             EducationNeuron = educationNeuron;
-            Weight = weight;
+            Synapse = synapse;
         }
     }
 }

@@ -23,50 +23,45 @@ namespace CharRecognizer.MachineLearning.EducationMethods
         public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedResultVector)
         {
             double[] resultVector = this.GetResultVector(neuralNetworkObj, inputVector);
+            double error          = errorMethod.GetError(expectedResultVector, resultVector);
 
             List<EducationLayer> educationNetwork = this.GetEducationNetwork(neuralNetworkObj);
-            for (int educationNeuronId = educationNetwork.Count - 1; educationNeuronId > 0; educationNeuronId--)
+            for (int educationLayerId = educationNetwork.Count - 1; educationLayerId >= 0; educationLayerId--)
             {
-                EducationLayer educationLayer = educationNetwork[educationNeuronId];
-                
+                EducationLayer educationLayer = educationNetwork[educationLayerId];
                 foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
                 {
                     NeuronObj neuron = educationNeuron.NeuronObj;
                     if (neuron.IsInLastLayer())
                     {
+                        //deltaWeight0 = (OUT(ideal) - OUT(actual)) * f'(IN)
                         educationNeuron.WeightDelta = (expectedResultVector[neuron.Id - 1] - resultVector[neuron.Id - 1]) * activationFunc.GetDerivativeValue(neuron.GetInputData());
                     }
                     else
                     {
+                        //deltaWeightH = f'(IN) * sum(Wi * delataWeighti)
                         double sumWeightDeltaInNextLayer = 0;
                         foreach (EducationSynapse educationSynapse in educationNeuron.GetEducationSynapses())
                         {
-                            sumWeightDeltaInNextLayer += educationSynapse.Weight * educationSynapse.EducationNeuron.WeightDelta;
+                            sumWeightDeltaInNextLayer += educationSynapse.Synapse.Weight * educationSynapse.EducationNeuron.WeightDelta;
                         }
                 
                         educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) * sumWeightDeltaInNextLayer;
                     }
                 }
             }
-            
-            double error = errorMethod.GetError(expectedResultVector, resultVector);
-            double weightDelta = 0;
 
-            for (int currentLayerId = neuralNetworkObj.GetCountLayers() - 2; currentLayerId > 0; currentLayerId--)
+            for (int educationLayerId = educationNetwork.Count - 2; educationLayerId >= 0; educationLayerId--)
             {
-                foreach (NeuralNetwork.NeuronObj neuron in neuralNetworkObj.GetLayerById(currentLayerId - 1).GetListNeurons())
+                EducationLayer educationLayer = educationNetwork[educationLayerId];
+                foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
                 {
-                    double sumWeightDeltaNextLayer = 0;
-                    foreach (NeuralNetwork.Neuron.Synapse synapse in neuron.GetSynapses())
+                    foreach (EducationSynapse educationSynapse in educationNeuron.GetEducationSynapses())
                     {
-                        NeuralNetwork.NeuronObj nextNeuron = synapse.NeuronObj;
+                        //grad(A, B) = deltaWeight(B) * OUT(A)
+                        double grad = educationSynapse.EducationNeuron.WeightDelta * educationNeuron.NeuronObj.GetOutputData();
+                        educationSynapse.Synapse.Weight += LEARNING_RATE * grad;//todo moment a*deltaWi
                     }
-                        
-                    
-                    //foreach (Synapse synapse in neuron.GetSynapses())
-                    //{
-                    //    synapse.Weight = synapse.Weight + (neuron.GetOutputData() * weightDelta * LEARNING_RATE);//todo add moment
-                    //}
                 }
             }
 
@@ -126,7 +121,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                             throw new Exception("Something goes wrong with id layers.");
                         }
                         
-                        educationNeuron.AddEducationSynapse(new EducationSynapse(nextLayerEducationNeuron, synapse.Weight));
+                        educationNeuron.AddEducationSynapse(new EducationSynapse(nextLayerEducationNeuron, synapse));
                     }
                 }
             }
