@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
 
@@ -21,35 +22,30 @@ namespace CharRecognizer.MachineLearning.EducationMethods
         {
             double[] resultVector = this.GetResultVector(neuralNetworkObj, inputVector);
 
-            List<UncertaintyPropagation.EducationLayer> layers = new List<UncertaintyPropagation.EducationLayer>();
-            foreach (Layer layer in neuralNetworkObj.GetListLayers())
+            List<EducationLayer> educationNetwork = this.GetEducationNetwork(neuralNetworkObj);
+            foreach (EducationLayer educationLayer in educationNetwork)
             {
-                UncertaintyPropagation.EducationLayer methodLayer = new UncertaintyPropagation.EducationLayer();
-                foreach (NeuronObj neuron in layer.GetListNeurons())
+                foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
                 {
-                    UncertaintyPropagation.EducationNeuron methodNeuron = new UncertaintyPropagation.EducationNeuron();
-                    methodNeuron.NeuronObj = neuron;
-
+                    NeuronObj neuron = educationNeuron.NeuronObj;
                     if (neuron.IsInLastLayer())
                     {
-                        methodNeuron.WeightDelta = expectedResultVector[neuron.Id] - inputVector[neuron.Id] * activationFunc.GetDerivativeValue(neuron.GetInputData());
+                        educationNeuron.WeightDelta = expectedResultVector[neuron.Id] - inputVector[neuron.Id] * activationFunc.GetDerivativeValue(neuron.GetInputData());
                     }
                     else
                     {
                         double sumWeightDeltaInNextLayer = 0;
-                        foreach (NeuralNetwork.Neuron.Synapse synapse in neuron.GetSynapses())
+                        foreach (EducationNeuron nextLayerEducationNeuron in educationNeuron.NextEducationLayer.GetListNeurons())
                         {
-                            
+                            sumWeightDeltaInNextLayer += nextLayerEducationNeuron.WeightDelta * 1;
                         }
-                        
-                        methodNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) ;
-                    }
-                    
-                    methodLayer.AddNeuron(methodNeuron);
-                }
                 
-                layers.Add(methodLayer);
+                        educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) ;
+                    }
+                }
             }
+           
+      
 
             
             double error = errorMethod.GetError(expectedResultVector, resultVector);
@@ -78,19 +74,48 @@ namespace CharRecognizer.MachineLearning.EducationMethods
 
         private double[] GetResultVector(NeuralNetworkObj neuralNetworkObj, double[] inputVector)
         {
+            double[] result = new double[neuralNetworkObj.GetLastLayer().GetCountNeurons()];
+
             neuralNetworkObj.Clear();
 
             neuralNetworkObj.SetInputVector(inputVector);
             neuralNetworkObj.Process();
 
-            double[] resultVector = new double[neuralNetworkObj.GetLastLayer().GetCountNeurons()];
             List<NeuralNetwork.NeuronObj> neurons = neuralNetworkObj.GetLastLayer().GetListNeurons();
             for (int i = 0; i < neurons.Count; i++)
             {
-                resultVector[i] = neurons[i].GetOutputData();
+                result[i] = neurons[i].GetOutputData();
             }
 
-            return resultVector;
+            return result;
+        }
+
+        private List<EducationLayer> GetEducationNetwork(NeuralNetworkObj neuralNetworkObj)
+        {
+            List<EducationLayer> result = new List<EducationLayer>();
+            foreach (Layer layer in neuralNetworkObj.GetListLayers())
+            {
+                EducationLayer educationLayer = new EducationLayer();
+                foreach (NeuronObj neuron in layer.GetListNeurons())
+                {
+                    educationLayer.AddNeuron(new EducationNeuron(neuron));
+                }
+                
+                result.Add(educationLayer);
+            }
+
+            for (int educationLayerId = 0; educationLayerId < result.Count - 1; educationLayerId++)
+            {
+                EducationLayer educationLayer     = result[educationLayerId];
+                EducationLayer nextEducationLayer = result[educationLayerId + 1];
+
+                foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
+                {
+                    educationNeuron.NextEducationLayer = nextEducationLayer;
+                }
+            }
+
+            return result;
         }
     }
 }
