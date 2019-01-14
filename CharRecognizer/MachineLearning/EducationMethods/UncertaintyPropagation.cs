@@ -47,20 +47,13 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                         }
                 
                         educationNeuron.WeightDelta = this.activationFunc.GetDerivativeValue(neuron.GetInputData()) * sumWeightDeltaInNextLayer;
-                    }
-                }
-            }
-
-            for (int educationLayerId = educationNetwork.Count - 2; educationLayerId >= 0; educationLayerId--)
-            {
-                EducationLayer educationLayer = educationNetwork[educationLayerId];
-                foreach (EducationNeuron educationNeuron in educationLayer.GetListNeurons())
-                {
-                    foreach (EducationSynapse educationSynapse in educationNeuron.GetEducationSynapses())
-                    {
-                        //grad(A, B) = deltaWeight(B) * OUT(A)
-                        double grad = educationSynapse.EducationNeuron.WeightDelta * educationNeuron.NeuronObj.GetOutputData();
-                        educationSynapse.Synapse.Weight += LEARNING_RATE * grad;//todo moment a*deltaWi
+                        
+                        foreach (EducationSynapse educationSynapse in educationNeuron.GetEducationSynapses())
+                        {
+                            //grad(A, B) = deltaWeight(B) * OUT(A)
+                            double grad = educationSynapse.EducationNeuron.WeightDelta * educationNeuron.NeuronObj.GetOutputData();
+                            educationSynapse.Synapse.Weight += LEARNING_RATE * grad;//todo moment a*deltaWi
+                        }
                     }
                 }
             }
