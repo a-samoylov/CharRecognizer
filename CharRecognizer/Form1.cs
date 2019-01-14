@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CharRecognizer.MachineLearning;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
-using CharRecognizer.MachineLearning.NeuralNetwork.Neuron.ActivationFunc;
 using CharRecognizer.MachineLearning.EducationMethods;
+using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
 
 namespace CharRecognizer
 {
@@ -22,29 +14,81 @@ namespace CharRecognizer
         public Form1()
         {
             InitializeComponent();
-            //GenerateTestNetworkWithWeight();
+            GenerateTestNetworkWithErrorWeight();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            GenerateTestNetworkWithWeight();
+            Manager neuralNetworkManager = new Manager();
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestErrorNeuralNetwork");
 
-            TestNeuralNetwork network = new TestNeuralNetwork();
-            double[] data = new double[] { 1, 0, 0 };
+            const int countTest = 8;
+            //const int countInputNeurons = 3;
+            //const int countOutputNeurons = 1;
 
-            MessageBox.Show(network.GetAnswer(data).ToString());
+            List<double[]> inputVectors = new List<double[]>();
+            inputVectors.Add(new double[] { 1, 1, 0});
+            inputVectors.Add(new double[] { 1, 1, 1 });
+            inputVectors.Add(new double[] { 1, 0, 0 });
+            inputVectors.Add(new double[] { 1, 0, 1 });
+            inputVectors.Add(new double[] { 0, 1, 0 });
+            inputVectors.Add(new double[] { 0, 1, 1 });
+            inputVectors.Add(new double[] { 0, 0, 0 });
+            inputVectors.Add(new double[] { 0, 0, 1 });
+
+            List<double[]> expectedVectors = new List<double[]>();
+            expectedVectors.Add(new double[] { 0 });
+            expectedVectors.Add(new double[] { 0 });
+            expectedVectors.Add(new double[] { 1 });
+            expectedVectors.Add(new double[] { 1 });
+            expectedVectors.Add(new double[] { 0 });
+            expectedVectors.Add(new double[] { 1 });
+            expectedVectors.Add(new double[] { 0 });
+            expectedVectors.Add(new double[] { 1 });
+
+            RootMse errorMethod = new RootMse();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                for (int j = 0; j < countTest; j++)
+                {
+                    neuralNetworkObj = EducateNetwork(neuralNetworkObj, inputVectors[j], expectedVectors[j]);
+                    double error = errorMethod.GetError(expectedVectors[j], this.GetResultVector(neuralNetworkObj));
+
+                    listBox1.Items.Add($"Iteration: {i} Error: {error}");
+                }
+            }
+
+            listBox1.Items.Add("#########################");
+
+            for (int j = 0; j < countTest; j++)
+            {
+                double[] inputVector = inputVectors[j];
+
+                neuralNetworkObj = EducateNetwork(neuralNetworkObj, inputVectors[j], expectedVectors[j]);
+                double[] resultVector = this.GetResultVector(neuralNetworkObj);
+
+                listBox1.Items.Add($"Input ({inputVector[0]}, {inputVector[1]}, {inputVector[2]}) Result: {resultVector[0]}");
+            }
         }
 
-        private void Test()
+        private NeuralNetworkObj EducateNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedVector)
         {
-            Manager neuralNetworkManager = new Manager();
-            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestNeuralNetwork");
-
-            double[] inputVector = new double[] { 1, 1, 0};
-            double[] expectedVector = new double[] { 0 };
-            
             UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
-            uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, inputVector, expectedVector);
+            return uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, inputVector, expectedVector);
+        }
+
+        private double[] GetResultVector(NeuralNetworkObj neuralNetworkObj)
+        {
+            double[] result = new double[neuralNetworkObj.GetLastLayer().GetCountNeurons()];
+
+            List<NeuronObj> neurons = neuralNetworkObj.GetLastLayer().GetListNeurons();
+            for (int i = 0; i < neurons.Count; i++)
+            {
+                result[i] = neurons[i].GetOutputData();
+            }
+
+            return result;
         }
 
         private void GenerateTestNetworkWithWeight()
@@ -128,7 +172,6 @@ namespace CharRecognizer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Test();
         }
     }
 }

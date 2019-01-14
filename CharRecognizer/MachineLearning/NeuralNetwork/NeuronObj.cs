@@ -95,7 +95,10 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
 
         public void ClearData()
         {
-            this.inputData = 0;
+            this.isSendSignals          = false;
+            this.isCalculatedOutputData = false;
+            this.outputData             = 0;
+            this.inputData              = 0;
         }
 
         public List<Synapse> GetSynapses()
