@@ -12,18 +12,15 @@ namespace CharRecognizer.MachineLearning.EducationMethods
         const double LEARNING_RATE = 0.1;
 
         private NeuralNetwork.Neuron.ActivationFunc.IDifferentiable activationFunc;
-        private ErrorMethods.IBase errorMethod;
         
         public UncertaintyPropagationMethod()
         {
-            errorMethod    = new RootMse();
             activationFunc = new NeuralNetwork.Neuron.ActivationFunc.Sigmoid();//todo make choice
         }
         
         public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedResultVector)
         {
             double[] resultVector = this.GetResultVector(neuralNetworkObj, inputVector);
-            double error          = errorMethod.GetError(expectedResultVector, resultVector);
 
             List<EducationLayer> educationNetwork = this.GetEducationNetwork(neuralNetworkObj);
             for (int educationLayerId = educationNetwork.Count - 1; educationLayerId >= 0; educationLayerId--)
