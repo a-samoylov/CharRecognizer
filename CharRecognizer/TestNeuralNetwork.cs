@@ -1,62 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CharRecognizer.MachineLearning;
 using CharRecognizer.MachineLearning.NeuralNetwork;
 
 namespace CharRecognizer
 {
-    class TestNeuralNetwork
+    class TestNeuralNetwork : AbstractNetwork
     {
         const string NAME               = "TestNeuralNetwork";
         const int INPUT_VECTOR_LENGTH   = 3;
-        const double MIN_CORRECT_ANSWER = 0.5;
+        const double MIN_CORRECT_ANSWER = 0.9;
 
-        private int[] neuronsInLayer = new int[] { INPUT_VECTOR_LENGTH, 2, 1 };
-        private NeuralNetworkObj neuralNetworkObj;
+        private int[] neuronsInLayer = new int[] { 3, 2, 1 };
 
-        public NeuralNetworkObj GetNeuralNetwork()
+        public int GetAnswer(double[] inputVector)
         {
-            if (this.neuralNetworkObj != null)
+            if (inputVector.Length != INPUT_VECTOR_LENGTH)
             {
-                return this.neuralNetworkObj;
+                throw new Exception("Invalid input vector length.");
             }
 
-            Manager neuralNetworkManager = new Manager();
-            this.neuralNetworkObj = neuralNetworkManager.Get(NAME);
+            NeuralNetworkObj neuralNetwork = this.GetNeuralNetwork();
 
-            return this.neuralNetworkObj;
-        }
+            neuralNetwork.SetInputVector(inputVector);
+            neuralNetwork.Process();
 
-        public void GenerateRandom()
-        {
-            Factory neuralNetworkFactory = new Factory();
-            NeuralNetworkObj neuralNetworkObj = neuralNetworkFactory.CreateWithRandomWeight(NAME, neuronsInLayer);
-
-            Manager neuralNetworkManager = new Manager();
-            neuralNetworkManager.Save(neuralNetworkObj);
-        }
-
-        public int GetAnswer(double[] inputData)
-        {
-            if (inputData.Length != INPUT_VECTOR_LENGTH)
-            {
-                throw new Exception("Invalid input data");
-            }
-
-            NeuralNetworkObj neuralNetworkObj = this.GetNeuralNetwork();
-
-            neuralNetworkObj.SetInputVector(inputData);
-            neuralNetworkObj.Process();
-
-            if (neuralNetworkObj.GetLastLayer().GetNeuronById(1).GetOutputData() >= MIN_CORRECT_ANSWER)
+            if (neuralNetwork.GetLastLayer().GetNeuronById(1).GetOutputData() >= MIN_CORRECT_ANSWER)
             {
                 return 1;
             }
 
             return 0;
+        }
+
+        public override string GetNetworkName()
+        {
+            return NAME;
+        }
+
+        public override int[] GetCountNeuronsInLayer()
+        {
+            return neuronsInLayer;
         }
     }
 }

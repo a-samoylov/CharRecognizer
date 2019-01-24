@@ -14,7 +14,8 @@ namespace CharRecognizer
         public Form1()
         {
             InitializeComponent();
-            GenerateTestNetworkWithErrorWeight();
+            //GenerateTestNetworkWithErrorWeight();
+            //GenerateTestNetworkWithWeight();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -22,7 +23,6 @@ namespace CharRecognizer
             Manager neuralNetworkManager = new Manager();
             NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestErrorNeuralNetwork");
 
-            const int countTest = 8;
             //const int countInputNeurons = 3;
             //const int countOutputNeurons = 1;
 
@@ -46,16 +46,18 @@ namespace CharRecognizer
             expectedVectors.Add(new double[] { 0 });
             expectedVectors.Add(new double[] { 1 });
 
+            int countTest = inputVectors.Count;
+
             RootMse errorMethod = new RootMse();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 90000; i++)
             {
                 for (int j = 0; j < countTest; j++)
                 {
                     neuralNetworkObj = EducateNetwork(neuralNetworkObj, inputVectors[j], expectedVectors[j]);
                     double error = errorMethod.GetError(expectedVectors[j], this.GetResultVector(neuralNetworkObj));
 
-                    listBox1.Items.Add($"Iteration: {i} Error: {error}");
+                    //listBox1.Items.Add($"Iteration: {i} Error: {error}");
                 }
             }
 
@@ -64,11 +66,11 @@ namespace CharRecognizer
             for (int j = 0; j < countTest; j++)
             {
                 double[] inputVector = inputVectors[j];
+                double[] expectedVector = expectedVectors[j];
 
-                neuralNetworkObj = EducateNetwork(neuralNetworkObj, inputVectors[j], expectedVectors[j]);
                 double[] resultVector = this.GetResultVector(neuralNetworkObj);
 
-                listBox1.Items.Add($"Input ({inputVector[0]}, {inputVector[1]}, {inputVector[2]}) Result: {resultVector[0]}");
+                listBox1.Items.Add($"Input ({inputVector[0]}, {inputVector[1]}, {inputVector[2]}) Expect: {expectedVector[0]} Result: {resultVector[0]}");
             }
         }
 
@@ -138,6 +140,8 @@ namespace CharRecognizer
             NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
             Layer layer1 = new Layer(1);
+            layer1.SetPositionFirst();
+            
             layer1.AddNeuron(new NeuronObj(1));
             layer1.AddNeuron(new NeuronObj(2));
             layer1.AddNeuron(new NeuronObj(3));
@@ -147,8 +151,9 @@ namespace CharRecognizer
             layer2.AddNeuron(new NeuronObj(2));
 
             Layer layer3 = new Layer(3);
+            layer3.SetPositionLast();
+            
             layer3.AddNeuron(new NeuronObj(1));
-
 
             layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.79));
             layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.85));

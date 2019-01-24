@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractNetwork.cs" />
     <Compile Include="MachineLearning\EducationMethods\UncertaintyPropagation\EducationSynapse.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Neuron\ActivationFunc\IBase.cs" />
     <Compile Include="MachineLearning\NeuralNetwork\Neuron\ActivationFunc\IDifferentiable.cs" />
