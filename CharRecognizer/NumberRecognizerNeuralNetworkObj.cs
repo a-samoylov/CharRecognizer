@@ -4,7 +4,7 @@ using CharRecognizer.MachineLearning.NeuralNetwork;
 
 namespace CharRecognizer
 {
-    class NumberRecognizerNeuralNetwork : AbstractNetwork
+    class NumberRecognizerNeuralNetworkObj : AbstractNetwork
     {
         const string NAME    = "CharRecognizerNeuralNetwork";
         const int IMG_SIZE   = 100 * 100;
@@ -22,7 +22,7 @@ namespace CharRecognizer
 
             //todo load network LazyLoad
             Manager neuralNetworkManager = new Manager();
-            NeuralNetworkObj neuralNetworkObj  = neuralNetworkManager.Get(NAME);
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get(NAME);
 
             neuralNetworkObj.SetInputVector(inputVector);
             neuralNetworkObj.Process();

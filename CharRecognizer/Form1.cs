@@ -6,16 +6,39 @@ using CharRecognizer.MachineLearning.NeuralNetwork;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 using CharRecognizer.MachineLearning.EducationMethods;
 using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace CharRecognizer
 {
     public partial class Form1 : Form
     {
+        Point lastPoint = Point.Empty;
+        bool isMouseDown = false;
+
         public Form1()
         {
             InitializeComponent();
             //GenerateTestNetworkWithErrorWeight();
             //GenerateTestNetworkWithWeight();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Bitmap btm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+
+            /*var bitmap = (Bitmap)Image.FromFile(@"F:\c#\CharRecognizer\CharRecognizer\data\test.bmp");
+            var array = new int[bitmap.Width, bitmap.Height];
+            for (var i = 0; i < bitmap.Width; i++)
+            {
+                for (var j = 0; j < bitmap.Height; j++)
+                {
+                    var pixel = bitmap.GetPixel(i, j);
+                    array[i, j] = Convert.ToInt16(pixel.R == 0 && pixel.G == 0 && pixel.B == 0);
+                }
+            }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -175,8 +198,52 @@ namespace CharRecognizer
             neuralNetworkManager.Save(neuralNetworkObj);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            lastPoint = e.Location;
+            isMouseDown = true;
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMouseDown == true)
+            {
+                using (Graphics g = Graphics.FromImage(pictureBox1.Image))
+                {
+                    g.DrawLine(new Pen(Color.Black, 3), lastPoint, e.Location);
+                    g.SmoothingMode = SmoothingMode.HighSpeed;
+                }
+
+                pictureBox1.Invalidate();
+
+                lastPoint = e.Location;
+            }
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            isMouseDown = false;
+            lastPoint = Point.Empty;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Invalidate();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Title = "Save Dialog";
+                saveFileDialog.Filter = "Bitmap Images (*.bmp)|*.bmp|All files(*.*)|*.*";
+                if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    pictureBox1.Image.Save(saveFileDialog.FileName);
+                    MessageBox.Show("Saved Successfully");
+                }
+            }
         }
     }
 }
