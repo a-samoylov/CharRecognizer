@@ -11,10 +11,11 @@ namespace CharRecognizer.MachineLearning
 
         private List<Layer> layers    = new List<Layer>();
         private bool isSetInputVector = false;
+        private int countEpochPassed = 0;
 
         public NeuralNetworkObj(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public Layer GetFirstLayer()
@@ -100,6 +101,16 @@ namespace CharRecognizer.MachineLearning
                     neuron.SendSignals();
                 }
             }
+        }
+
+        public void EpochPassed()
+        {
+            this.countEpochPassed++;
+        }
+
+        public int GetCountEpochPassed()
+        {
+            return countEpochPassed;
         }
 
         public void Clear()

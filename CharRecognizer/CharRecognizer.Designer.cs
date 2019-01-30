@@ -43,11 +43,17 @@
             this.layersCountTextBox = new System.Windows.Forms.TextBox();
             this.newNetworkNameLabel = new System.Windows.Forms.Label();
             this.newNetworkNameTextBox = new System.Windows.Forms.TextBox();
+            this.epochPassedLabel = new System.Windows.Forms.Label();
+            this.educateNetworkButton = new System.Windows.Forms.Button();
+            this.educateNetworkProgressBar = new System.Windows.Forms.ProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.educateNetworkNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.charRecognizerGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.charPictureBox)).BeginInit();
             this.generalGroupBox.SuspendLayout();
             this.descriptionGroupBox.SuspendLayout();
             this.generatorGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // charRecognizerGroupBox
@@ -103,10 +109,15 @@
             // 
             // generalGroupBox
             // 
+            this.generalGroupBox.Controls.Add(this.educateNetworkNumericUpDown);
+            this.generalGroupBox.Controls.Add(this.label1);
+            this.generalGroupBox.Controls.Add(this.educateNetworkProgressBar);
+            this.generalGroupBox.Controls.Add(this.educateNetworkButton);
+            this.generalGroupBox.Controls.Add(this.epochPassedLabel);
             this.generalGroupBox.Controls.Add(this.networkComboBox);
             this.generalGroupBox.Location = new System.Drawing.Point(12, 66);
             this.generalGroupBox.Name = "generalGroupBox";
-            this.generalGroupBox.Size = new System.Drawing.Size(275, 62);
+            this.generalGroupBox.Size = new System.Drawing.Size(275, 207);
             this.generalGroupBox.TabIndex = 1;
             this.generalGroupBox.TabStop = false;
             this.generalGroupBox.Text = "General";
@@ -146,7 +157,7 @@
             this.generatorGroupBox.Controls.Add(this.layersCountTextBox);
             this.generatorGroupBox.Controls.Add(this.newNetworkNameLabel);
             this.generatorGroupBox.Controls.Add(this.newNetworkNameTextBox);
-            this.generatorGroupBox.Location = new System.Drawing.Point(12, 184);
+            this.generatorGroupBox.Location = new System.Drawing.Point(12, 279);
             this.generatorGroupBox.Name = "generatorGroupBox";
             this.generatorGroupBox.Size = new System.Drawing.Size(290, 141);
             this.generatorGroupBox.TabIndex = 3;
@@ -195,6 +206,58 @@
             this.newNetworkNameTextBox.Size = new System.Drawing.Size(188, 20);
             this.newNetworkNameTextBox.TabIndex = 0;
             // 
+            // epochPassedLabel
+            // 
+            this.epochPassedLabel.AutoSize = true;
+            this.epochPassedLabel.Location = new System.Drawing.Point(134, 28);
+            this.epochPassedLabel.Name = "epochPassedLabel";
+            this.epochPassedLabel.Size = new System.Drawing.Size(87, 13);
+            this.epochPassedLabel.TabIndex = 1;
+            this.epochPassedLabel.Text = "Epoch passed: 0";
+            // 
+            // educateNetworkButton
+            // 
+            this.educateNetworkButton.Location = new System.Drawing.Point(6, 149);
+            this.educateNetworkButton.Name = "educateNetworkButton";
+            this.educateNetworkButton.Size = new System.Drawing.Size(263, 23);
+            this.educateNetworkButton.TabIndex = 2;
+            this.educateNetworkButton.Text = "Educate network";
+            this.educateNetworkButton.UseVisualStyleBackColor = true;
+            this.educateNetworkButton.Click += new System.EventHandler(this.educateNetworkButton_Click);
+            // 
+            // educateNetworkProgressBar
+            // 
+            this.educateNetworkProgressBar.Location = new System.Drawing.Point(6, 178);
+            this.educateNetworkProgressBar.Name = "educateNetworkProgressBar";
+            this.educateNetworkProgressBar.Size = new System.Drawing.Size(263, 23);
+            this.educateNetworkProgressBar.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 126);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Number of training network iterations:";
+            // 
+            // educateNetworkNumericUpDown
+            // 
+            this.educateNetworkNumericUpDown.Location = new System.Drawing.Point(196, 123);
+            this.educateNetworkNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.educateNetworkNumericUpDown.Name = "educateNetworkNumericUpDown";
+            this.educateNetworkNumericUpDown.Size = new System.Drawing.Size(73, 20);
+            this.educateNetworkNumericUpDown.TabIndex = 5;
+            this.educateNetworkNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // CharRecognizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,10 +273,12 @@
             this.charRecognizerGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.charPictureBox)).EndInit();
             this.generalGroupBox.ResumeLayout(false);
+            this.generalGroupBox.PerformLayout();
             this.descriptionGroupBox.ResumeLayout(false);
             this.descriptionGroupBox.PerformLayout();
             this.generatorGroupBox.ResumeLayout(false);
             this.generatorGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -235,5 +300,10 @@
         private System.Windows.Forms.Label layersCountLabel;
         private System.Windows.Forms.TextBox layersCountTextBox;
         private System.Windows.Forms.Button generateButton;
+        private System.Windows.Forms.Label epochPassedLabel;
+        private System.Windows.Forms.ProgressBar educateNetworkProgressBar;
+        private System.Windows.Forms.Button educateNetworkButton;
+        private System.Windows.Forms.NumericUpDown educateNetworkNumericUpDown;
+        private System.Windows.Forms.Label label1;
     }
 }

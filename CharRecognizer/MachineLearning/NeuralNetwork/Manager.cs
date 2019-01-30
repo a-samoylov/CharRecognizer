@@ -30,7 +30,7 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork
         public NeuralNetworkObj Get(string name)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream($"{this.pathToFileStorage}{name}.dat", FileMode.Open))
+            using (FileStream fs = new FileStream($"{this.pathToFileStorage}\\{name}.dat", FileMode.Open))
             {
                 return (NeuralNetworkObj)formatter.Deserialize(fs);
             }

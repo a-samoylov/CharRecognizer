@@ -19,14 +19,20 @@ namespace CharRecognizer
 
             return this.neuralNetworkObj;
         }
-        
+
+        public void UpdateNeuralNetwork(NeuralNetworkObj neuralNetwork)
+        {
+            Manager neuralNetworkManager = new Manager();
+            neuralNetworkManager.Save(neuralNetwork);
+        }
+
         public void GenerateRandom()
         {
             Factory neuralNetworkFactory = new Factory();
-            NeuralNetworkObj neuralNetworkObj = neuralNetworkFactory.CreateWithRandomWeight(this.GetNetworkName(), this.GetCountNeuronsInLayer());
+            NeuralNetworkObj neuralNetwork = neuralNetworkFactory.CreateWithRandomWeight(this.GetNetworkName(), this.GetCountNeuronsInLayer());
 
             Manager neuralNetworkManager = new Manager();
-            neuralNetworkManager.Save(neuralNetworkObj);
+            neuralNetworkManager.Save(neuralNetwork);
         }
 
         public abstract string GetNetworkName();

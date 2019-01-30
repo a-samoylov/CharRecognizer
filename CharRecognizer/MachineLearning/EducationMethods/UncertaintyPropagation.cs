@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using CharRecognizer.MachineLearning.EducationMethods.UncertaintyPropagation;
 using CharRecognizer.MachineLearning.NeuralNetwork;
-using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
 using CharRecognizer.MachineLearning.NeuralNetwork.Neuron;
 
 namespace CharRecognizer.MachineLearning.EducationMethods
 {
     class UncertaintyPropagationMethod
     {
-        const double LEARNING_RATE = 0.1;
+        const double LEARNING_RATE = 0.0001;
 
         private NeuralNetwork.Neuron.ActivationFunc.IDifferentiable activationFunc;
         

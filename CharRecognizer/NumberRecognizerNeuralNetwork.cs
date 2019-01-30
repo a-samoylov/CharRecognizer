@@ -9,9 +9,26 @@ namespace CharRecognizer
         const double MINIMUM_OUTPUT_DATA_FOR_SUCCESS_RESULT = 0.8;
 
         private string name;
-        private int imgHeight;
-        private int imgWidth;
+        private int countNeuronsInFirstLayer;
         private int[] neuronsInLayer;
+
+        public NumberRecognizerNeuralNetwork(string name)
+        {
+            this.name = name;
+
+            NeuralNetworkObj neuralNetwork = this.GetNeuralNetwork();
+
+            neuronsInLayer = new int[neuralNetwork.GetCountLayers()];
+
+            int index = 0;
+            foreach (Layer layer in neuralNetwork.GetListLayers())
+            {
+                this.neuronsInLayer[index] = layer.GetCountNeurons();
+                index++;
+            }
+
+            this.countNeuronsInFirstLayer = neuralNetwork.GetFirstLayer().GetCountNeurons();
+        }
 
         public NumberRecognizerNeuralNetwork(string name, int[] neuronsInLayer, int imgHeight, int imgWidth)
         {
@@ -25,15 +42,14 @@ namespace CharRecognizer
                 throw new Exception("Invalid count neurons in first layer.");
             }
 
-            this.name           = name;
-            this.neuronsInLayer = neuronsInLayer;
-            this.imgHeight      = imgHeight;
-            this.imgWidth       = imgWidth;
+            this.name                     = name;
+            this.neuronsInLayer           = neuronsInLayer;
+            this.countNeuronsInFirstLayer = imgWidth * imgHeight;
         }
 
         public int GetNumberFromImgVector(double[] inputVector)
         {
-            if (inputVector.Length != this.imgHeight * this.imgWidth)
+            if (inputVector.Length != this.countNeuronsInFirstLayer)
             {
                 throw new Exception("Invalid input vector length.");
             }

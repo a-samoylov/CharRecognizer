@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using CharRecognizer.MachineLearning;
 using CharRecognizer.MachineLearning.NeuralNetwork;
+using CharRecognizer.MachineLearning.EducationMethods;
 
 namespace CharRecognizer
 {
@@ -17,13 +19,19 @@ namespace CharRecognizer
 
         private void CharRecognizer_Load(object sender, EventArgs e)
         {
-            MachineLearning.NeuralNetwork.Manager manager = new Manager();
-            networkComboBox.Items.AddRange(manager.GetAllNames());
+            this.LoadNetworks();
         }
 
         private void networkComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            //var a = networkComboBox.SelectedText;
+            string networkName = networkComboBox.SelectedItem.ToString();
+
+            MachineLearning.NeuralNetwork.Manager manager = new Manager();
+            NeuralNetworkObj neuralNetwork = manager.Get(networkName);
+
+            epochPassedLabel.Text = $"Epoch passed: {neuralNetwork.GetCountEpochPassed()}";
+
+            charRecognizerGroupBox.Enabled = true;
         }
 
         private void generateButton_Click(object sender, EventArgs e)
@@ -43,6 +51,37 @@ namespace CharRecognizer
 
             NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(name, neuronsInLayer, IMG_HEIGHT, IMG_WIDHT);
             numberRecognizerNeuralNetwork.GenerateRandom();
+
+            this.LoadNetworks();
+        }
+
+        private void LoadNetworks()
+        {
+            MachineLearning.NeuralNetwork.Manager manager = new Manager();
+
+            networkComboBox.Items.Clear();
+            networkComboBox.Items.AddRange(manager.GetAllNames());
+        }
+
+        private void educateNetworkButton_Click(object sender, EventArgs e)
+        {
+            string networkName = networkComboBox.SelectedItem.ToString();
+
+            UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
+            NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(networkName);
+
+            NeuralNetworkObj neuralNetworkObj = numberRecognizerNeuralNetwork.GetNeuralNetwork();
+
+            for (int iteration = 0; iteration < educateNetworkNumericUpDown.Value; iteration++)
+            {
+                //neuralNetworkObj = uncertaintyPropagationMethod.GetTaughtNeuralNetwork(numberRecognizerNeuralNetwork.GetNeuralNetwork());
+            }
+
+            numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
+
+            //генерация отчета
+            //загрузка данных 
+            //прогрес бар
         }
     }
 }
