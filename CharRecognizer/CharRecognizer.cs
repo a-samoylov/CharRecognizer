@@ -93,13 +93,13 @@ namespace CharRecognizer
                     );
                 }
 
-                educateNetworkProgressBar.Value = iteration / countIteration * 100;
+                educateNetworkProgressBar.Value = (iteration + 1) / countIteration * 100;
             }
 
             numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
 
             //генерация отчета
-            //загрузка данных 
+            //Протестить обучение на простой сети
         }
 
         private Dictionary<double[], double[]> GetPrepareData(int outputVectorLength)

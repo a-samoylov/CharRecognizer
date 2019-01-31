@@ -11,7 +11,8 @@ namespace CharRecognizer.MachineLearning.EducationMethods
         const double LEARNING_RATE = 0.0001;
 
         private NeuralNetwork.Neuron.ActivationFunc.IDifferentiable activationFunc;
-        
+        private List<EducationLayer> _educationNetwork;
+
         public UncertaintyPropagationMethod()
         {
             activationFunc = new NeuralNetwork.Neuron.ActivationFunc.Sigmoid();//todo make choice
@@ -31,7 +32,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                     if (neuron.IsInLastLayer())
                     {
                         //deltaWeight0 = (OUT(ideal) - OUT(actual)) * f'(IN)
-                        educationNeuron.WeightDelta = (expectedResultVector[neuron.Id - 1] - resultVector[neuron.Id - 1]) * activationFunc.GetDerivativeValue(neuron.GetInputData());
+                        educationNeuron.WeightDelta = (expectedResultVector[neuron.Id] - resultVector[neuron.Id]) * activationFunc.GetDerivativeValue(neuron.GetInputData());
                     }
                     else
                     {
@@ -77,6 +78,11 @@ namespace CharRecognizer.MachineLearning.EducationMethods
 
         private List<EducationLayer> GetEducationNetwork(NeuralNetworkObj neuralNetworkObj)
         {
+            if (this._educationNetwork != null)
+            {
+                return this._educationNetwork;
+            }
+
             List<EducationLayer> result = new List<EducationLayer>();
             foreach (Layer layer in neuralNetworkObj.GetListLayers())
             {
@@ -115,7 +121,9 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                 }
             }
 
-            return result;
+            this._educationNetwork = result;
+
+            return this._educationNetwork;
         }
 
         private Synapse GetSynapse(NeuralNetworkObj neuralNetworkObj, int currentLayerId, int neuronId, int nextNeuronId)
