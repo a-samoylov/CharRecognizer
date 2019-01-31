@@ -34,6 +34,11 @@
             this.charPictureBox = new System.Windows.Forms.PictureBox();
             this.recognizeButton = new System.Windows.Forms.Button();
             this.generalGroupBox = new System.Windows.Forms.GroupBox();
+            this.educateNetworkNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.educateNetworkProgressBar = new System.Windows.Forms.ProgressBar();
+            this.educateNetworkButton = new System.Windows.Forms.Button();
+            this.epochPassedLabel = new System.Windows.Forms.Label();
             this.networkComboBox = new System.Windows.Forms.ComboBox();
             this.descriptionGroupBox = new System.Windows.Forms.GroupBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
@@ -43,17 +48,12 @@
             this.layersCountTextBox = new System.Windows.Forms.TextBox();
             this.newNetworkNameLabel = new System.Windows.Forms.Label();
             this.newNetworkNameTextBox = new System.Windows.Forms.TextBox();
-            this.epochPassedLabel = new System.Windows.Forms.Label();
-            this.educateNetworkButton = new System.Windows.Forms.Button();
-            this.educateNetworkProgressBar = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.educateNetworkNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.charRecognizerGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.charPictureBox)).BeginInit();
             this.generalGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).BeginInit();
             this.descriptionGroupBox.SuspendLayout();
             this.generatorGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // charRecognizerGroupBox
@@ -78,6 +78,7 @@
             this.saveImageButton.TabIndex = 8;
             this.saveImageButton.Text = "Save image";
             this.saveImageButton.UseVisualStyleBackColor = true;
+            this.saveImageButton.Click += new System.EventHandler(this.saveImageButton_Click);
             // 
             // clearButton
             // 
@@ -87,6 +88,7 @@
             this.clearButton.TabIndex = 7;
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
             // charPictureBox
             // 
@@ -97,6 +99,9 @@
             this.charPictureBox.Size = new System.Drawing.Size(100, 100);
             this.charPictureBox.TabIndex = 6;
             this.charPictureBox.TabStop = false;
+            this.charPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.charPictureBox_MouseDown);
+            this.charPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.charPictureBox_MouseMove);
+            this.charPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.charPictureBox_MouseUp);
             // 
             // recognizeButton
             // 
@@ -121,6 +126,58 @@
             this.generalGroupBox.TabIndex = 1;
             this.generalGroupBox.TabStop = false;
             this.generalGroupBox.Text = "General";
+            // 
+            // educateNetworkNumericUpDown
+            // 
+            this.educateNetworkNumericUpDown.Location = new System.Drawing.Point(196, 123);
+            this.educateNetworkNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.educateNetworkNumericUpDown.Name = "educateNetworkNumericUpDown";
+            this.educateNetworkNumericUpDown.Size = new System.Drawing.Size(73, 20);
+            this.educateNetworkNumericUpDown.TabIndex = 5;
+            this.educateNetworkNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 126);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Number of training network iterations:";
+            // 
+            // educateNetworkProgressBar
+            // 
+            this.educateNetworkProgressBar.Location = new System.Drawing.Point(6, 178);
+            this.educateNetworkProgressBar.Name = "educateNetworkProgressBar";
+            this.educateNetworkProgressBar.Size = new System.Drawing.Size(263, 23);
+            this.educateNetworkProgressBar.TabIndex = 3;
+            // 
+            // educateNetworkButton
+            // 
+            this.educateNetworkButton.Location = new System.Drawing.Point(6, 149);
+            this.educateNetworkButton.Name = "educateNetworkButton";
+            this.educateNetworkButton.Size = new System.Drawing.Size(263, 23);
+            this.educateNetworkButton.TabIndex = 2;
+            this.educateNetworkButton.Text = "Educate network";
+            this.educateNetworkButton.UseVisualStyleBackColor = true;
+            this.educateNetworkButton.Click += new System.EventHandler(this.educateNetworkButton_Click);
+            // 
+            // epochPassedLabel
+            // 
+            this.epochPassedLabel.AutoSize = true;
+            this.epochPassedLabel.Location = new System.Drawing.Point(134, 28);
+            this.epochPassedLabel.Name = "epochPassedLabel";
+            this.epochPassedLabel.Size = new System.Drawing.Size(87, 13);
+            this.epochPassedLabel.TabIndex = 1;
+            this.epochPassedLabel.Text = "Epoch passed: 0";
             // 
             // networkComboBox
             // 
@@ -206,58 +263,6 @@
             this.newNetworkNameTextBox.Size = new System.Drawing.Size(188, 20);
             this.newNetworkNameTextBox.TabIndex = 0;
             // 
-            // epochPassedLabel
-            // 
-            this.epochPassedLabel.AutoSize = true;
-            this.epochPassedLabel.Location = new System.Drawing.Point(134, 28);
-            this.epochPassedLabel.Name = "epochPassedLabel";
-            this.epochPassedLabel.Size = new System.Drawing.Size(87, 13);
-            this.epochPassedLabel.TabIndex = 1;
-            this.epochPassedLabel.Text = "Epoch passed: 0";
-            // 
-            // educateNetworkButton
-            // 
-            this.educateNetworkButton.Location = new System.Drawing.Point(6, 149);
-            this.educateNetworkButton.Name = "educateNetworkButton";
-            this.educateNetworkButton.Size = new System.Drawing.Size(263, 23);
-            this.educateNetworkButton.TabIndex = 2;
-            this.educateNetworkButton.Text = "Educate network";
-            this.educateNetworkButton.UseVisualStyleBackColor = true;
-            this.educateNetworkButton.Click += new System.EventHandler(this.educateNetworkButton_Click);
-            // 
-            // educateNetworkProgressBar
-            // 
-            this.educateNetworkProgressBar.Location = new System.Drawing.Point(6, 178);
-            this.educateNetworkProgressBar.Name = "educateNetworkProgressBar";
-            this.educateNetworkProgressBar.Size = new System.Drawing.Size(263, 23);
-            this.educateNetworkProgressBar.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 126);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Number of training network iterations:";
-            // 
-            // educateNetworkNumericUpDown
-            // 
-            this.educateNetworkNumericUpDown.Location = new System.Drawing.Point(196, 123);
-            this.educateNetworkNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.educateNetworkNumericUpDown.Name = "educateNetworkNumericUpDown";
-            this.educateNetworkNumericUpDown.Size = new System.Drawing.Size(73, 20);
-            this.educateNetworkNumericUpDown.TabIndex = 5;
-            this.educateNetworkNumericUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // CharRecognizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -274,11 +279,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.charPictureBox)).EndInit();
             this.generalGroupBox.ResumeLayout(false);
             this.generalGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).EndInit();
             this.descriptionGroupBox.ResumeLayout(false);
             this.descriptionGroupBox.PerformLayout();
             this.generatorGroupBox.ResumeLayout(false);
             this.generatorGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.educateNetworkNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
