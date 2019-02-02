@@ -8,14 +8,14 @@ namespace CharRecognizer.MachineLearning.EducationMethods
 {
     class UncertaintyPropagationMethod
     {
-        const double LEARNING_RATE = 0.0001;
-
         private NeuralNetwork.Neuron.ActivationFunc.IDifferentiable activationFunc;
         private List<EducationLayer> _educationNetwork;
-
-        public UncertaintyPropagationMethod()
+        private double learningRate;
+        
+        public UncertaintyPropagationMethod(double learningRate)
         {
             activationFunc = new NeuralNetwork.Neuron.ActivationFunc.Sigmoid();//todo make choice
+            this.learningRate = learningRate;
         }
         
         public NeuralNetworkObj GetTaughtNeuralNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedResultVector)
@@ -49,7 +49,7 @@ namespace CharRecognizer.MachineLearning.EducationMethods
                         {
                             //grad(A, B) = deltaWeight(B) * OUT(A)
                             double grad = educationSynapse.EducationNeuron.WeightDelta * educationNeuron.NeuronObj.GetOutputData();
-                            educationSynapse.Synapse.Weight += LEARNING_RATE * grad;//todo moment a*deltaWi
+                            educationSynapse.Synapse.Weight += this.learningRate * grad;//todo moment a*deltaWi
                         }
                     }
                 }

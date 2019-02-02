@@ -13,6 +13,8 @@ namespace CharRecognizer
 {
     public partial class CharRecognizer : Form
     {
+        const double LEARNING_RATE = 0.001;
+        
         const int IMG_HEIGHT = 100;
         const int IMG_WIDHT  = 100;
 
@@ -75,7 +77,7 @@ namespace CharRecognizer
         {
             string networkName = networkComboBox.SelectedItem.ToString();
 
-            UncertaintyPropagationMethod uncertaintyPropagationMethod   = new UncertaintyPropagationMethod();
+            UncertaintyPropagationMethod uncertaintyPropagationMethod   = new UncertaintyPropagationMethod(LEARNING_RATE);
             NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(networkName);
 
             NeuralNetworkObj neuralNetworkObj = numberRecognizerNeuralNetwork.GetNeuralNetwork();

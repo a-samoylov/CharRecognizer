@@ -8,12 +8,13 @@ using CharRecognizer.MachineLearning.EducationMethods;
 using CharRecognizer.MachineLearning.EducationMethods.ErrorMethods;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace CharRecognizer
 {
     public partial class Form1 : Form
     {
+        const double LEARNING_RATE = 0.001;
+
         Point lastPoint = Point.Empty;
         bool isMouseDown = false;
 
@@ -44,63 +45,70 @@ namespace CharRecognizer
         private void button1_Click(object sender, EventArgs e)
         {
             Manager neuralNetworkManager = new Manager();
-            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestErrorNeuralNetwork");
+            NeuralNetworkObj neuralNetworkObj = neuralNetworkManager.Get("TestNeuralNetwork");
 
-            //const int countInputNeurons = 3;
-            //const int countOutputNeurons = 1;
-
-            List<double[]> inputVectors = new List<double[]>();
-            inputVectors.Add(new double[] { 1, 1, 0});
-            inputVectors.Add(new double[] { 1, 1, 1 });
-            inputVectors.Add(new double[] { 1, 0, 0 });
-            inputVectors.Add(new double[] { 1, 0, 1 });
-            inputVectors.Add(new double[] { 0, 1, 0 });
-            inputVectors.Add(new double[] { 0, 1, 1 });
-            inputVectors.Add(new double[] { 0, 0, 0 });
-            inputVectors.Add(new double[] { 0, 0, 1 });
-
-            List<double[]> expectedVectors = new List<double[]>();
-            expectedVectors.Add(new double[] { 0 });
-            expectedVectors.Add(new double[] { 0 });
-            expectedVectors.Add(new double[] { 1 });
-            expectedVectors.Add(new double[] { 1 });
-            expectedVectors.Add(new double[] { 0 });
-            expectedVectors.Add(new double[] { 1 });
-            expectedVectors.Add(new double[] { 0 });
-            expectedVectors.Add(new double[] { 1 });
-
-            int countTest = inputVectors.Count;
-
-            RootMse errorMethod = new RootMse();
-
-            for (int i = 0; i < 90000; i++)
+            Dictionary<double[], double[]> data = new Dictionary<double[], double[]>();
+            data.Add(new double[] { 1, 1, 0 }, new double[] { 0 });
+            data.Add(new double[] { 1, 1, 1 }, new double[] { 0 });
+            data.Add(new double[] { 1, 0, 0 }, new double[] { 1 });
+            data.Add(new double[] { 1, 0, 1 }, new double[] { 1 });
+            data.Add(new double[] { 0, 1, 0 }, new double[] { 0 });
+            data.Add(new double[] { 0, 1, 1 }, new double[] { 1 });
+            data.Add(new double[] { 0, 0, 0 }, new double[] { 0 });
+            data.Add(new double[] { 0, 0, 1 }, new double[] { 1 });
+            
+            foreach (var iterationData in data)
             {
-                for (int j = 0; j < countTest; j++)
-                {
-                    neuralNetworkObj = EducateNetwork(neuralNetworkObj, inputVectors[j], expectedVectors[j]);
-                    double error = errorMethod.GetError(expectedVectors[j], this.GetResultVector(neuralNetworkObj));
+                double[] inputVector = iterationData.Key;
+                double[] expectedVector = iterationData.Value;
 
-                    //listBox1.Items.Add($"Iteration: {i} Error: {error}");
-                }
-            }
-
-            listBox1.Items.Add("#########################");
-
-            for (int j = 0; j < countTest; j++)
-            {
-                double[] inputVector = inputVectors[j];
-                double[] expectedVector = expectedVectors[j];
-
+                neuralNetworkObj.Clear();
+                neuralNetworkObj.SetInputVector(inputVector);
+                neuralNetworkObj.Process();
+                
                 double[] resultVector = this.GetResultVector(neuralNetworkObj);
 
                 listBox1.Items.Add($"Input ({inputVector[0]}, {inputVector[1]}, {inputVector[2]}) Expect: {expectedVector[0]} Result: {resultVector[0]}");
             }
-        }
+            
+            RootMse errorMethod                                       = new RootMse();
+            UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod(LEARNING_RATE);
 
-        private NeuralNetworkObj EducateNetwork(NeuralNetworkObj neuralNetworkObj, double[] inputVector, double[] expectedVector)
-        {
-            UncertaintyPropagationMethod uncertaintyPropagationMethod = new UncertaintyPropagationMethod();
-            return uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, inputVector, expectedVector);
+            int countIteration = 900000;
+            for (int i = 0; i < countIteration; i++)
+            {
+                foreach (var iterationData in data)
+                {
+                    double[] inputVector = iterationData.Key;
+                    double[] expectedVector = iterationData.Value;
+                    
+                    neuralNetworkObj = uncertaintyPropagationMethod.GetTaughtNeuralNetwork(neuralNetworkObj, inputVector, expectedVector);
+
+                    double error = errorMethod.GetError(expectedVector, this.GetResultVector(neuralNetworkObj));
+                    
+                    //listBox1.Items.Add($"Iteration: {i} Error: {error}");
+                }
+
+                progressBar1.Value = i * 100 / countIteration ;
+            }
+
+            listBox1.Items.Add("#########################");
+
+            foreach (var iterationData in data)
+            {
+                double[] inputVector = iterationData.Key;
+                double[] expectedVector = iterationData.Value;
+
+                neuralNetworkObj.Clear();
+                neuralNetworkObj.SetInputVector(inputVector);
+                neuralNetworkObj.Process();
+                
+                double[] resultVector = this.GetResultVector(neuralNetworkObj);
+
+                listBox1.Items.Add($"Input ({inputVector[0]}, {inputVector[1]}, {inputVector[2]}) Expect: {expectedVector[0]} Result: {resultVector[0]}");
+            }
+
+            neuralNetworkManager.Save(neuralNetworkObj);
         }
 
         private double[] GetResultVector(NeuralNetworkObj neuralNetworkObj)
@@ -121,33 +129,33 @@ namespace CharRecognizer
             string name = "TestNeuralNetwork";
             NeuralNetworkObj neuralNetworkObj = new NeuralNetworkObj(name);
 
-            Layer layer1 = new Layer(1);
+            Layer layer1 = new Layer(0);
             layer1.SetPositionFirst();
             
+            layer1.AddNeuron(new NeuronObj(0));
             layer1.AddNeuron(new NeuronObj(1));
             layer1.AddNeuron(new NeuronObj(2));
-            layer1.AddNeuron(new NeuronObj(3));
 
-            Layer layer2 = new Layer(2);
+            Layer layer2 = new Layer(1);
+            layer2.AddNeuron(new NeuronObj(0));
             layer2.AddNeuron(new NeuronObj(1));
-            layer2.AddNeuron(new NeuronObj(2));
 
-            Layer layer3 = new Layer(3);
+            Layer layer3 = new Layer(2);
             layer3.SetPositionLast();
             
-            layer3.AddNeuron(new NeuronObj(1));
+            layer3.AddNeuron(new NeuronObj(0));
             
-            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.5));
+            layer1.GetNeuronById(0).AddSynapse(new Synapse(layer2.GetNeuronById(0), 0.25));
+            layer1.GetNeuronById(0).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.5));
 
-            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.25));
-            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(2), -0.4));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(0), 0.25));
+            layer1.GetNeuronById(1).AddSynapse(new Synapse(layer2.GetNeuronById(1), -0.4));
 
-            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0));
-            layer1.GetNeuronById(3).AddSynapse(new Synapse(layer2.GetNeuronById(2), 0.9));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(0), 0));
+            layer1.GetNeuronById(2).AddSynapse(new Synapse(layer2.GetNeuronById(1), 0.9));
 
-            layer2.GetNeuronById(1).AddSynapse(new Synapse(layer3.GetNeuronById(1), -1));
-            layer2.GetNeuronById(2).AddSynapse(new Synapse(layer3.GetNeuronById(1), 1));
+            layer2.GetNeuronById(0).AddSynapse(new Synapse(layer3.GetNeuronById(0), -1));
+            layer2.GetNeuronById(1).AddSynapse(new Synapse(layer3.GetNeuronById(0), 1));
 
             neuralNetworkObj.AddLayer(layer1);
             neuralNetworkObj.AddLayer(layer2);
@@ -244,6 +252,11 @@ namespace CharRecognizer
                     MessageBox.Show("Saved Successfully");
                 }
             }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
