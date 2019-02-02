@@ -16,8 +16,8 @@ namespace CharRecognizer
         const double LEARNING_RATE = 0.0001;
         const int COUNT_ITERATION  = 100;
 
-        const int IMG_HEIGHT = 100;
-        const int IMG_WIDHT  = 100;
+        const int IMG_HEIGHT = 40;
+        const int IMG_WIDHT  = 40;
 
         private Point lastPoint  = Point.Empty;
         private bool isMouseDown = false;
@@ -39,8 +39,8 @@ namespace CharRecognizer
         {
             string networkName = networkComboBox.SelectedItem.ToString();
 
-            MachineLearning.NeuralNetwork.Manager manager = new Manager();
-            this.neuralNetwork = manager.Get(networkName);
+            Manager neuralNetworkManager = new Manager();
+            this.neuralNetwork = neuralNetworkManager.Get(networkName);
 
             epochPassedLabel.Text = $"Epoch passed: {this.neuralNetwork.GetCountEpochPassed()}";
 
@@ -84,13 +84,13 @@ namespace CharRecognizer
 
             NeuralNetworkObj neuralNetworkObj = numberRecognizerNeuralNetwork.GetNeuralNetwork();
 
-            var prepareData    = this.GetPrepareData(neuralNetworkObj.GetLastLayer().GetCountNeurons());
-            int countEpoch =  Convert.ToInt16(educateNetworkNumericUpDown.Value);//todo
-
-            reportManager.AddDataBeforeEducate(neuralNetworkObj, prepareData);
+            var prepareData = this.GetPrepareData(neuralNetworkObj.GetLastLayer().GetCountNeurons());
+            int countEpoch  =  Convert.ToInt16(educateNetworkNumericUpDown.Value);
 
             for (int epoch = 0; epoch < countEpoch; epoch++)
             {
+                reportManager.AddDataBeforeEducate(neuralNetworkObj, prepareData);
+
                 for (int iteration = 0; iteration < COUNT_ITERATION; iteration++)
                 {
                     foreach (var entity in prepareData)
@@ -104,16 +104,16 @@ namespace CharRecognizer
                             expectedResultVector
                         );
                     }
-
-                    educateNetworkProgressBar.Value = ((iteration + 1) * 100 / COUNT_ITERATION) / countEpoch;
                 }
+
+                reportManager.AddDataAfterEducate(neuralNetworkObj, prepareData);
+                reportManager.SaveReport(neuralNetworkObj);
+
+                neuralNetworkObj.EpochPassed();
+
+                educateNetworkProgressBar.Value = ((epoch + 1) * 100 / countEpoch);
             }
-
-            reportManager.AddDataAfterEducate(neuralNetworkObj, prepareData);
-
-            reportManager.SaveReport(neuralNetworkObj);
-
-            neuralNetworkObj.EpochPassed();
+           
             numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
         }
 
@@ -126,7 +126,7 @@ namespace CharRecognizer
             foreach (var directory in Directory.GetDirectories(pathToData))
             {
                 string dataFolderName = Path.GetFileName(directory);
-                int reightAnswer = Convert.ToInt16(dataFolderName);
+                int reightAnswer      = Convert.ToInt16(dataFolderName);
 
                 double[] outputVector = new double[outputVectorLength];
                 outputVector[reightAnswer] = 1;
@@ -134,7 +134,7 @@ namespace CharRecognizer
                 foreach (var file in Directory.GetFiles(directory))
                 {
                     var bitmap = (Bitmap)Image.FromFile(file);
-                    var inputVector = new double[bitmap.Width * bitmap.Height];
+                    var inputVector = new double[IMG_WIDHT * IMG_HEIGHT];
                     for (var x = 0; x < bitmap.Width; x++)
                     {
                         for (var y = 0; y < bitmap.Height; y++)

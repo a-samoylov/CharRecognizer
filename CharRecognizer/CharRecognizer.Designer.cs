@@ -62,7 +62,6 @@
             this.charRecognizerGroupBox.Controls.Add(this.clearButton);
             this.charRecognizerGroupBox.Controls.Add(this.charPictureBox);
             this.charRecognizerGroupBox.Controls.Add(this.recognizeButton);
-            this.charRecognizerGroupBox.Enabled = false;
             this.charRecognizerGroupBox.Location = new System.Drawing.Point(308, 66);
             this.charRecognizerGroupBox.Name = "charRecognizerGroupBox";
             this.charRecognizerGroupBox.Size = new System.Drawing.Size(294, 354);
@@ -72,7 +71,7 @@
             // 
             // saveImageButton
             // 
-            this.saveImageButton.Location = new System.Drawing.Point(122, 19);
+            this.saveImageButton.Location = new System.Drawing.Point(52, 19);
             this.saveImageButton.Name = "saveImageButton";
             this.saveImageButton.Size = new System.Drawing.Size(73, 26);
             this.saveImageButton.TabIndex = 8;
@@ -82,7 +81,7 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(122, 51);
+            this.clearButton.Location = new System.Drawing.Point(52, 51);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(73, 26);
             this.clearButton.TabIndex = 7;
@@ -96,7 +95,7 @@
             this.charPictureBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.charPictureBox.Location = new System.Drawing.Point(6, 19);
             this.charPictureBox.Name = "charPictureBox";
-            this.charPictureBox.Size = new System.Drawing.Size(100, 100);
+            this.charPictureBox.Size = new System.Drawing.Size(40, 40);
             this.charPictureBox.TabIndex = 6;
             this.charPictureBox.TabStop = false;
             this.charPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.charPictureBox_MouseDown);
@@ -105,7 +104,7 @@
             // 
             // recognizeButton
             // 
-            this.recognizeButton.Location = new System.Drawing.Point(122, 93);
+            this.recognizeButton.Location = new System.Drawing.Point(52, 93);
             this.recognizeButton.Name = "recognizeButton";
             this.recognizeButton.Size = new System.Drawing.Size(73, 26);
             this.recognizeButton.TabIndex = 5;
