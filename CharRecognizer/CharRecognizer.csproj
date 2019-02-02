@@ -64,6 +64,7 @@
     <Compile Include="MachineLearning\EducationMethods\UncertaintyPropagation.cs" />
     <Compile Include="MachineLearning\EducationMethods\UncertaintyPropagation\EducationLayer.cs" />
     <Compile Include="MachineLearning\EducationMethods\UncertaintyPropagation\EducationNeuron.cs" />
+    <Compile Include="MachineLearning\NeuralNetwork\Report\Manager.cs" />
     <Compile Include="NumberRecognizerNeuralNetwork.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

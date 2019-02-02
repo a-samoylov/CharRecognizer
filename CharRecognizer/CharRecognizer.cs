@@ -13,8 +13,9 @@ namespace CharRecognizer
 {
     public partial class CharRecognizer : Form
     {
-        const double LEARNING_RATE = 0.001;
-        
+        const double LEARNING_RATE = 0.0001;
+        const int COUNT_ITERATION  = 100;
+
         const int IMG_HEIGHT = 100;
         const int IMG_WIDHT  = 100;
 
@@ -79,36 +80,45 @@ namespace CharRecognizer
 
             UncertaintyPropagationMethod uncertaintyPropagationMethod   = new UncertaintyPropagationMethod(LEARNING_RATE);
             NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(networkName);
+            MachineLearning.NeuralNetwork.Report.Manager reportManager  = new MachineLearning.NeuralNetwork.Report.Manager();
 
             NeuralNetworkObj neuralNetworkObj = numberRecognizerNeuralNetwork.GetNeuralNetwork();
 
-            var prepareData = this.GetPrepareData(neuralNetworkObj.GetLastLayer().GetCountNeurons());
-            int countIteration =  Convert.ToInt16(educateNetworkNumericUpDown.Value);
-            for (int iteration = 0; iteration < countIteration; iteration++)
+            var prepareData    = this.GetPrepareData(neuralNetworkObj.GetLastLayer().GetCountNeurons());
+            int countEpoch =  Convert.ToInt16(educateNetworkNumericUpDown.Value);//todo
+
+            reportManager.AddDataBeforeEducate(neuralNetworkObj, prepareData);
+
+            for (int iteration = 0; iteration < COUNT_ITERATION; iteration++)
             {
                 foreach (var entity in prepareData)
                 {
+                    double[] inputVector          = entity.Key;
+                    double[] expectedResultVector = entity.Value;
+
                     neuralNetworkObj = uncertaintyPropagationMethod.GetTaughtNeuralNetwork(
                         numberRecognizerNeuralNetwork.GetNeuralNetwork(),
-                        entity.Key, 
-                        entity.Value
+                        inputVector, 
+                        expectedResultVector
                     );
                 }
 
-                educateNetworkProgressBar.Value = (iteration + 1) / countIteration * 100;
+                educateNetworkProgressBar.Value = (iteration + 1) * 100 / COUNT_ITERATION;
             }
 
-            numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
+            reportManager.AddDataAfterEducate(neuralNetworkObj, prepareData);
 
-            //генерация отчета
-            //Протестить обучение на простой сети
+            reportManager.SaveReport(neuralNetworkObj);
+
+            neuralNetworkObj.EpochPassed();
+            numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
         }
 
         private Dictionary<double[], double[]> GetPrepareData(int outputVectorLength)
         {
             Dictionary<double[], double[]> result = new Dictionary<double[], double[]>();
 
-            string pathToData      = Configs.GetInstance().GetPathToData();
+            string pathToData = Configs.GetInstance().GetPathToData();
 
             foreach (var directory in Directory.GetDirectories(pathToData))
             {

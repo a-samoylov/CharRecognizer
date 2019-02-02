@@ -149,9 +149,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 126);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.Size = new System.Drawing.Size(161, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Number of training network iterations:";
+            this.label1.Text = "Count of training network epoch:";
             // 
             // educateNetworkProgressBar
             // 
@@ -267,7 +267,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 446);
+            this.ClientSize = new System.Drawing.Size(1073, 446);
             this.Controls.Add(this.generatorGroupBox);
             this.Controls.Add(this.descriptionGroupBox);
             this.Controls.Add(this.generalGroupBox);
