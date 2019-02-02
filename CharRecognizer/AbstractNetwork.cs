@@ -20,6 +20,11 @@ namespace CharRecognizer
             return this.neuralNetworkObj;
         }
 
+        protected void SetNeuralNetworkObj(NeuralNetworkObj neuralNetworkObj)
+        {
+            this.neuralNetworkObj = neuralNetworkObj;
+        }
+
         public void UpdateNeuralNetwork(NeuralNetworkObj neuralNetwork)
         {
             Manager neuralNetworkManager = new Manager();

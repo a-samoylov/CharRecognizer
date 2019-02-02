@@ -19,9 +19,11 @@ namespace CharRecognizer
         const int IMG_HEIGHT = 100;
         const int IMG_WIDHT  = 100;
 
-        Point lastPoint  = Point.Empty;
-        bool isMouseDown = false;
+        private Point lastPoint  = Point.Empty;
+        private bool isMouseDown = false;
 
+        private NeuralNetworkObj neuralNetwork;
+        
         public CharRecognizer()
         {
             InitializeComponent();
@@ -38,9 +40,9 @@ namespace CharRecognizer
             string networkName = networkComboBox.SelectedItem.ToString();
 
             MachineLearning.NeuralNetwork.Manager manager = new Manager();
-            NeuralNetworkObj neuralNetwork = manager.Get(networkName);
+            this.neuralNetwork = manager.Get(networkName);
 
-            epochPassedLabel.Text = $"Epoch passed: {neuralNetwork.GetCountEpochPassed()}";
+            epochPassedLabel.Text = $"Epoch passed: {this.neuralNetwork.GetCountEpochPassed()}";
 
             charRecognizerGroupBox.Enabled = true;
         }
@@ -76,10 +78,8 @@ namespace CharRecognizer
 
         private void educateNetworkButton_Click(object sender, EventArgs e)
         {
-            string networkName = networkComboBox.SelectedItem.ToString();
-
             UncertaintyPropagationMethod uncertaintyPropagationMethod   = new UncertaintyPropagationMethod(LEARNING_RATE);
-            NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(networkName);
+            NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(this.neuralNetwork);
             MachineLearning.NeuralNetwork.Report.Manager reportManager  = new MachineLearning.NeuralNetwork.Report.Manager();
 
             NeuralNetworkObj neuralNetworkObj = numberRecognizerNeuralNetwork.GetNeuralNetwork();
@@ -89,21 +89,24 @@ namespace CharRecognizer
 
             reportManager.AddDataBeforeEducate(neuralNetworkObj, prepareData);
 
-            for (int iteration = 0; iteration < COUNT_ITERATION; iteration++)
+            for (int epoch = 0; epoch < countEpoch; epoch++)
             {
-                foreach (var entity in prepareData)
+                for (int iteration = 0; iteration < COUNT_ITERATION; iteration++)
                 {
-                    double[] inputVector          = entity.Key;
-                    double[] expectedResultVector = entity.Value;
+                    foreach (var entity in prepareData)
+                    {
+                        double[] inputVector          = entity.Key;
+                        double[] expectedResultVector = entity.Value;
 
-                    neuralNetworkObj = uncertaintyPropagationMethod.GetTaughtNeuralNetwork(
-                        numberRecognizerNeuralNetwork.GetNeuralNetwork(),
-                        inputVector, 
-                        expectedResultVector
-                    );
+                        neuralNetworkObj = uncertaintyPropagationMethod.GetTaughtNeuralNetwork(
+                            numberRecognizerNeuralNetwork.GetNeuralNetwork(),
+                            inputVector, 
+                            expectedResultVector
+                        );
+                    }
+
+                    educateNetworkProgressBar.Value = ((iteration + 1) * 100 / COUNT_ITERATION) / countEpoch;
                 }
-
-                educateNetworkProgressBar.Value = (iteration + 1) * 100 / COUNT_ITERATION;
             }
 
             reportManager.AddDataAfterEducate(neuralNetworkObj, prepareData);

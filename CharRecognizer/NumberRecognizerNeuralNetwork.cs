@@ -12,6 +12,23 @@ namespace CharRecognizer
         private int countNeuronsInFirstLayer;
         private int[] neuronsInLayer;
 
+        public NumberRecognizerNeuralNetwork(NeuralNetworkObj neuralNetwork)
+        {
+            this.name = neuralNetwork.Name; 
+            this.SetNeuralNetworkObj(neuralNetwork);
+            
+            neuronsInLayer = new int[neuralNetwork.GetCountLayers()];
+
+            int index = 0;
+            foreach (Layer layer in neuralNetwork.GetListLayers())
+            {
+                this.neuronsInLayer[index] = layer.GetCountNeurons();
+                index++;
+            }
+
+            this.countNeuronsInFirstLayer = neuralNetwork.GetFirstLayer().GetCountNeurons();
+        }
+        
         public NumberRecognizerNeuralNetwork(string name)
         {
             this.name = name;
