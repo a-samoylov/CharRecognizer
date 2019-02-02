@@ -31,6 +31,8 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
                     sw.WriteLine(text);
                 }
             }
+
+            this.data = new List<string>();
         }
 
         public void AddDataBeforeEducate(NeuralNetworkObj neuralNetworkObj, Dictionary<double[], double[]> prepareData)
