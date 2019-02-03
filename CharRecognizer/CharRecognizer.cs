@@ -106,12 +106,12 @@ namespace CharRecognizer
                     }
                 }
 
+                educateNetworkProgressBar.Value = Convert.ToInt16((epoch + 1.0) / countEpoch * 100);
+
                 reportManager.AddDataAfterEducate(neuralNetworkObj, prepareData);
                 reportManager.SaveReport(neuralNetworkObj);
 
                 neuralNetworkObj.EpochPassed();
-
-                educateNetworkProgressBar.Value = ((epoch + 1) * 100 / countEpoch);
             }
            
             numberRecognizerNeuralNetwork.UpdateNeuralNetwork(neuralNetworkObj);
@@ -208,6 +208,29 @@ namespace CharRecognizer
 
             charPictureBox.Image = bitmap;
             charPictureBox.Invalidate();
+        }
+
+        private void recognizeButton_Click(object sender, EventArgs e)
+        {
+            var bitmap = new Bitmap(charPictureBox.Image);
+            var inputVector = new double[IMG_WIDHT * IMG_HEIGHT];
+            for (var x = 0; x < bitmap.Width; x++)
+            {
+                for (var y = 0; y < bitmap.Height; y++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    inputVector[y + x * IMG_HEIGHT] = Convert.ToDouble(pixel.R == 0 && pixel.G == 0 && pixel.B == 0);
+                }
+            }
+
+            NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(this.neuralNetwork);
+            numberRecognizerNeuralNetwork.GetNumberFromImgVector(inputVector);
+
+            answerListBox.Items.Clear();
+            foreach (var neuron in numberRecognizerNeuralNetwork.GetNeuralNetwork().GetLastLayer().GetListNeurons())
+            {
+                answerListBox.Items.Add(neuron.GetOutputData().ToString());
+            }
         }
     }
 }

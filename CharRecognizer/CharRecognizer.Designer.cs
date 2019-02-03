@@ -48,6 +48,7 @@
             this.layersCountTextBox = new System.Windows.Forms.TextBox();
             this.newNetworkNameLabel = new System.Windows.Forms.Label();
             this.newNetworkNameTextBox = new System.Windows.Forms.TextBox();
+            this.answerListBox = new System.Windows.Forms.ListBox();
             this.charRecognizerGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.charPictureBox)).BeginInit();
             this.generalGroupBox.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // charRecognizerGroupBox
             // 
+            this.charRecognizerGroupBox.Controls.Add(this.answerListBox);
             this.charRecognizerGroupBox.Controls.Add(this.saveImageButton);
             this.charRecognizerGroupBox.Controls.Add(this.clearButton);
             this.charRecognizerGroupBox.Controls.Add(this.charPictureBox);
@@ -110,6 +112,7 @@
             this.recognizeButton.TabIndex = 5;
             this.recognizeButton.Text = "Recognize";
             this.recognizeButton.UseVisualStyleBackColor = true;
+            this.recognizeButton.Click += new System.EventHandler(this.recognizeButton_Click);
             // 
             // generalGroupBox
             // 
@@ -262,6 +265,14 @@
             this.newNetworkNameTextBox.Size = new System.Drawing.Size(188, 20);
             this.newNetworkNameTextBox.TabIndex = 0;
             // 
+            // answerListBox
+            // 
+            this.answerListBox.FormattingEnabled = true;
+            this.answerListBox.Location = new System.Drawing.Point(6, 126);
+            this.answerListBox.Name = "answerListBox";
+            this.answerListBox.Size = new System.Drawing.Size(209, 212);
+            this.answerListBox.TabIndex = 9;
+            // 
             // CharRecognizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -309,5 +320,6 @@
         private System.Windows.Forms.Button educateNetworkButton;
         private System.Windows.Forms.NumericUpDown educateNetworkNumericUpDown;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox answerListBox;
     }
 }

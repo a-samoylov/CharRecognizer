@@ -73,6 +73,7 @@ namespace CharRecognizer
 
             NeuralNetworkObj neuralNetworkObj = this.GetNeuralNetwork();
 
+            neuralNetworkObj.Clear();
             neuralNetworkObj.SetInputVector(inputVector);
             neuralNetworkObj.Process();
 
