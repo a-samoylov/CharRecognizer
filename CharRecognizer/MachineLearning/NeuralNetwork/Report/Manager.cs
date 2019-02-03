@@ -37,6 +37,7 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
 
         public void AddDataBeforeEducate(NeuralNetworkObj neuralNetworkObj, Dictionary<double[], double[]> prepareData)
         {
+            int id = 1;
             foreach (var entity in prepareData)
             {
                 double[] inputVector          = entity.Key;
@@ -48,7 +49,7 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
 
                 double[] resultVector = GetResultVector(neuralNetworkObj);
 
-                data.Add("#########################################");
+                data.Add($"ID: {id}");
                 data.Add($"Epoch:  {neuralNetworkObj.GetCountEpochPassed()} (Before educate)");
                 data.Add($"Error:  {this.errorMethod.GetError(expectedResultVector, resultVector).ToString()}");
                 data.Add("Expected Result:");
@@ -62,11 +63,17 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
                     data.Add(item.ToString());
                 }
                 data.Add("#########################################");
+
+                id++;
             }
         }
 
         public void AddDataAfterEducate(NeuralNetworkObj neuralNetworkObj, Dictionary<double[], double[]> prepareData)
         {
+            data.Add("#########################################");
+            data.Add("#########################################");
+
+            int id = 1;
             foreach (var entity in prepareData)
             {
                 double[] inputVector = entity.Key;
@@ -77,8 +84,8 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
                 neuralNetworkObj.Process();
 
                 double[] resultVector = GetResultVector(neuralNetworkObj);
-
-                data.Add("#########################################");
+                
+                data.Add($"ID: {id}");
                 data.Add($"Epoch:  {neuralNetworkObj.GetCountEpochPassed()} (After educate)");
                 data.Add($"Error:  {this.errorMethod.GetError(expectedResultVector, resultVector).ToString()}");
                 data.Add("Expected Result:");
@@ -92,6 +99,7 @@ namespace CharRecognizer.MachineLearning.NeuralNetwork.Report
                     data.Add(item.ToString());
                 }
                 data.Add("#########################################");
+                id++;
             }
         }
 
