@@ -20,7 +20,7 @@ namespace CharRecognizer.MachineLearning
 
         public Layer GetFirstLayer()
         {
-            if (layers.Count == 0)
+            if (this.GetCountLayers() == 0)
             {
                 throw new Exception("Layers is empty.");
             }
@@ -30,7 +30,7 @@ namespace CharRecognizer.MachineLearning
 
         public Layer GetLastLayer()
         {
-            if (layers.Count == 0)
+            if (this.GetCountLayers() == 0)
             {
                 throw new Exception("Layers is empty.");
             }
@@ -63,12 +63,12 @@ namespace CharRecognizer.MachineLearning
 
         public void AddLayer(Layer layer)
         {
-            if (GetLayerById(layer.Id) != null)
+            if (this.GetLayerById(layer.Id) != null)
             {
                 throw new Exception("Layer with this id has already added.");
             }
 
-            layers.Add(layer);
+            this.layers.Add(layer);
         }
 
         public void SetInputVector(double[] v)
@@ -78,7 +78,7 @@ namespace CharRecognizer.MachineLearning
                 throw new Exception("Invalid input vector.");
             }
 
-            isSetInputVector = true;
+            this.isSetInputVector = true;
 
             List<NeuronObj> neurons = this.GetFirstLayer().GetListNeurons();
             for (int i = 0; i < neurons.Count; i++)
@@ -89,12 +89,12 @@ namespace CharRecognizer.MachineLearning
 
         public void Process()
         {
-            if (!isSetInputVector)
+            if (!this.isSetInputVector)
             {
                 throw new Exception("The input vector is not set.");
             }
 
-            foreach (Layer layer in layers)
+            foreach (Layer layer in this.layers)
             {
                 foreach (NeuronObj neuron in layer.GetListNeurons())
                 {
@@ -115,9 +115,9 @@ namespace CharRecognizer.MachineLearning
 
         public void Clear()
         {
-            isSetInputVector = false;
+            this.isSetInputVector = false;
 
-            foreach (Layer layer in layers)
+            foreach (Layer layer in this.layers)
             {
                 foreach (NeuronObj neuron in layer.GetListNeurons())
                 {

@@ -224,12 +224,20 @@ namespace CharRecognizer
             }
 
             NumberRecognizerNeuralNetwork numberRecognizerNeuralNetwork = new NumberRecognizerNeuralNetwork(this.neuralNetwork);
-            numberRecognizerNeuralNetwork.GetNumberFromImgVector(inputVector);
+            int result = numberRecognizerNeuralNetwork.GetNumberFromImgVector(inputVector);
 
             answerListBox.Items.Clear();
             foreach (var neuron in numberRecognizerNeuralNetwork.GetNeuralNetwork().GetLastLayer().GetListNeurons())
             {
-                answerListBox.Items.Add(neuron.GetOutputData().ToString());
+                answerListBox.Items.Add(Math.Round(neuron.GetOutputData(), 5).ToString());
+            }
+            
+            if (result == -1)
+            {
+                MessageBox.Show("Can not recognize char.");
+            } else
+            {
+                MessageBox.Show($"Char is: {result}.");
             }
         }
     }
